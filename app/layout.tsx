@@ -13,9 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "MoodRing — Real-Time Emotional Intelligence",
+  title: "Sentira - The World's Emotional Weather Map",
   description:
-    "A live, color-coded map of collective human sentiment across cities and regions in real time.",
+    "Real-time global emotiona intelligence. 82 emotions. 247 cities. Every 15 minutes",
 };
 
 export default function RootLayout({
