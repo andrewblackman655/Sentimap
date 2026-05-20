@@ -1,81 +1,178 @@
 import Link from "next/link";
 
-const emotions = [
-  { label: "Joy", color: "#FFD54F" },
-  { label: "Sadness", color: "#42A5F5" },
-  { label: "Anger", color: "#EF5350" },
-  { label: "Fear / Anxiety", color: "#7E57C2" },
-  { label: "Calm", color: "#26A69A" },
-  { label: "Excitement", color: "#FF7043" },
-  { label: "Disgust", color: "#8D6E63" },
-  { label: "Confusion", color: "#BDBDBD" },
+// ── 12 emotion families · 82 total emotions ─────────────────────────────────
+const emotionFamilies = [
+  {
+    family: "Joy",
+    color: "#EF9F27",
+    light: "#FAEEDA",
+    dark: "#633806",
+    emotions: ["Bliss", "Contentment", "Cheerfulness", "Delight", "Joy", "Elation", "Euphoria"],
+  },
+  {
+    family: "Love",
+    color: "#D4537E",
+    light: "#FBEAF0",
+    dark: "#4B1528",
+    emotions: ["Fondness", "Warmth", "Tenderness", "Affection", "Compassion", "Love", "Devotion"],
+  },
+  {
+    family: "Excitement",
+    color: "#639922",
+    light: "#EAF3DE",
+    dark: "#173404",
+    emotions: ["Curiosity", "Interest", "Wonder", "Enthusiasm", "Excitement", "Awe", "Exhilaration"],
+  },
+  {
+    family: "Calm",
+    color: "#1D9E75",
+    light: "#E1F5EE",
+    dark: "#04342C",
+    emotions: ["Openness", "Ease", "Hope", "Serenity", "Calm", "Tranquility", "Peace"],
+  },
+  {
+    family: "Sadness",
+    color: "#378ADD",
+    light: "#E6F1FB",
+    dark: "#042C53",
+    emotions: ["Wistfulness", "Longing", "Nostalgia", "Sadness", "Melancholy", "Grief", "Despair"],
+  },
+  {
+    family: "Anxiety",
+    color: "#7F77DD",
+    light: "#EEEDFE",
+    dark: "#26215C",
+    emotions: ["Unease", "Nervousness", "Worry", "Anxiety", "Apprehension", "Fear", "Dread"],
+  },
+  {
+    family: "Anger",
+    color: "#D85A30",
+    light: "#FAECE7",
+    dark: "#4A1B0C",
+    emotions: ["Irritation", "Annoyance", "Frustration", "Anger", "Indignation", "Rage", "Fury"],
+  },
+  {
+    family: "Disgust",
+    color: "#E24B4A",
+    light: "#FCEBEB",
+    dark: "#501313",
+    emotions: ["Distaste", "Displeasure", "Aversion", "Disgust", "Contempt", "Loathing"],
+  },
+  {
+    family: "Shame",
+    color: "#534AB7",
+    light: "#EEEDFE",
+    dark: "#26215C",
+    emotions: ["Awkwardness", "Embarrassment", "Regret", "Guilt", "Shame", "Humiliation"],
+  },
+  {
+    family: "Pride",
+    color: "#BA7517",
+    light: "#FAEEDA",
+    dark: "#412402",
+    emotions: ["Satisfaction", "Confidence", "Dignity", "Pride", "Achievement", "Triumph"],
+  },
+  {
+    family: "Confusion",
+    color: "#888780",
+    light: "#F1EFE8",
+    dark: "#2C2C2A",
+    emotions: ["Uncertainty", "Doubt", "Perplexity", "Confusion", "Bewilderment", "Disorientation"],
+  },
+  {
+    family: "Apathy",
+    color: "#5F5E5A",
+    light: "#F1EFE8",
+    dark: "#2C2C2A",
+    emotions: ["Detachment", "Disinterest", "Boredom", "Numbness", "Apathy", "Emptiness"],
+  },
 ];
 
+// ── 4-step pipeline ───────────────────────────────────────────────────────────
 const steps = [
   {
     number: "01",
-    title: "Ingest",
-    desc: "Public digital signals — social posts, news feeds — are collected in real time across the globe.",
+    title: "Harvest",
+    color: "#378ADD",
+    desc: "Every 15 minutes, Sentira ingests from GDELT 2.0, Bluesky Jetstream, multilingual news APIs, and Telegram — over 500,000 signals per day in 100+ languages across 247 cities.",
   },
   {
     number: "02",
     title: "Classify",
-    desc: "Each signal is classified into one of eight nuanced emotional categories using AI-powered language models.",
+    color: "#7F77DD",
+    desc: "Each signal is assigned one of 82 nuanced emotions across 12 families using AI-powered language models. Every classification also receives a topic label: disaster, sports, politics, culture, or economy.",
   },
   {
     number: "03",
-    title: "Aggregate",
-    desc: "Signals are grouped by geography and time window, producing weighted emotional distributions per region.",
+    title: "Normalize",
+    color: "#1D9E75",
+    desc: "Raw scores are measured against Sentira's topic baselines — the expected emotional distribution for that event type. The deviation score is the real signal. This is what makes city-to-city comparison valid.",
   },
   {
     number: "04",
     title: "Visualize",
-    desc: "The result is a live, color-coded world map — an emotional weather layer over the information ecosystem.",
+    color: "#EF9F27",
+    desc: "Deviation scores render onto the live ROYGBIV emotion atlas — the world map of human feeling — with city drilldowns, timeline comparisons, event tracking, and enterprise API access.",
   },
 ];
 
+// ── Use cases ─────────────────────────────────────────────────────────────────
 const useCases = [
   {
     icon: "📰",
-    title: "Media & Newsrooms",
-    desc: "Instant visual context for breaking events. See how audiences react as stories unfold.",
+    accent: "#378ADD",
+    title: "Media & Journalism",
+    desc: "Track collective emotional response to breaking events as they unfold. Know how the world actually feels — not just what it says — before you publish.",
+    quote: "Sentira flagged a +22pt frustration spike in LA 40 minutes before the story broke nationally.",
   },
   {
     icon: "📈",
-    title: "Financial Analysts",
-    desc: "Aggregate sentiment tied to economic topics may surface early signals of volatility or confidence shifts.",
+    accent: "#EF9F27",
+    title: "Financial Intelligence",
+    desc: "Macro sentiment shifts — fear cascades, hope surges, collective apathy — routinely precede market movements. Sentira's deviation signals provide proprietary early-warning intelligence.",
+    quote: "The Shanghai anxiety signal was 2.4σ above baseline three days before the index correction.",
   },
   {
     icon: "🔬",
-    title: "Research Institutions",
-    desc: "Structured, aggregated datasets for computational social science, political science, and psychology.",
+    accent: "#639922",
+    title: "Academic Research",
+    desc: "Population-scale emotional data, ethically sourced and depersonalized. Historical baselines going back to 2015 enable longitudinal studies at global scale.",
+    quote: "The first platform to distinguish Dread from Fear in real-time population data.",
   },
   {
     icon: "📣",
-    title: "Brands & Agencies",
-    desc: "Geographic emotional layers that complement traditional dashboards and reveal regional nuance.",
+    accent: "#D4537E",
+    title: "Brand Strategy",
+    desc: "Know when your target market is in a receptive emotional state. Measure how your campaign lands relative to the emotional baseline — not just the noise floor.",
+    quote: "We delayed the campaign 9 days based on Sentira's signal. The re-timed launch outperformed by 34%.",
   },
 ];
 
+// ─────────────────────────────────────────────────────────────────────────────
+
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-[#0b1020] text-white font-sans">
-      {/* Nav */}
-      <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/10 bg-[#0b1020]/80 backdrop-blur-md">
+    <div className="min-h-screen bg-[#F4F0E8] text-[#0C0F1A] font-sans">
+
+      {/* ── NAV ── */}
+      <nav className="fixed top-0 left-0 right-0 z-50 border-b border-black/[0.07] bg-white/92 backdrop-blur-md">
         <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
-          <span className="text-lg font-bold tracking-tight">
-            <span className="text-[#FFD54F]">Sentira
+          <span className="text-base font-bold tracking-[0.35em] text-[#0C0F1A] uppercase">
+            Sentira
           </span>
-          <div className="flex items-center gap-6 text-sm text-white/60">
-            <a href="#how-it-works" className="hover:text-white transition">
+          <div className="flex items-center gap-6 text-sm text-[#4E5A6E]">
+            <a href="#how-it-works" className="hover:text-[#0C0F1A] transition">
               How It Works
             </a>
-            <a href="#use-cases" className="hover:text-white transition">
+            <a href="#spectrum" className="hover:text-[#0C0F1A] transition">
+              Spectrum
+            </a>
+            <a href="#use-cases" className="hover:text-[#0C0F1A] transition">
               Use Cases
             </a>
             <Link
               href="/demo"
-              className="bg-[#FFD54F] text-black font-semibold px-4 py-1.5 rounded-full text-sm hover:bg-yellow-300 transition"
+              className="bg-[#0C0F1A] text-[#F4F0E8] font-semibold px-4 py-1.5 rounded-full text-sm hover:bg-[#1a2240] transition"
             >
               Try Demo
             </Link>
@@ -83,103 +180,115 @@ export default function LandingPage() {
         </div>
       </nav>
 
-      {/* Hero */}
-      <section className="pt-32 pb-24 px-6 text-center relative overflow-hidden">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-[#FFD54F]/10 rounded-full blur-3xl pointer-events-none" />
+      {/* ── HERO ── */}
+      <section className="pt-36 pb-24 px-6 text-center relative overflow-hidden">
+        {/* Glow orb */}
+        <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[700px] h-[420px] bg-[#1D9E75]/[0.07] rounded-full blur-3xl pointer-events-none" />
         <div className="relative max-w-3xl mx-auto">
-          <div className="inline-flex items-center gap-2 bg-white/5 border border-white/10 text-white/60 text-xs px-4 py-1.5 rounded-full mb-8">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#26A69A] animate-pulse" />
-            Real-time emotional intelligence
+
+          {/* Live badge */}
+          <div className="inline-flex items-center gap-2 bg-[#1D9E75]/10 border border-[#1D9E75]/25 text-[#0D916A] text-xs px-4 py-1.5 rounded-full mb-8 font-semibold tracking-[0.15em] uppercase">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#0D916A] animate-pulse" />
+            Beta Waitlist — Now Open
           </div>
-          <h1 className="text-5xl sm:text-6xl font-extrabold tracking-tight leading-tight mb-6">
-            The world&apos;s emotional
+
+          {/* Headline */}
+          <h1 className="text-5xl sm:text-6xl font-extrabold tracking-tight leading-[1.05] mb-6 text-[#0C0F1A]">
+            The world has
             <br />
-            <span className="text-[#FFD54F]">weather map</span>
+            <span className="text-[#0D916A] font-light italic">feelings.</span>
           </h1>
-          <p className="text-lg text-white/60 leading-relaxed max-w-2xl mx-auto mb-10">
-            Sentira transforms public digital expression into a live, color-coded map of
-            collective human sentiment — by city, region, and topic — in real time.
+          <p className="text-lg text-[#4E5A6E] leading-relaxed max-w-xl mx-auto mb-3 font-light">
+            Now you can read them.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <p className="text-base text-[#9AAAB8] leading-relaxed max-w-2xl mx-auto mb-10 font-light">
+            Sentira maps collective human emotion across 247 cities in real time —
+            82 nuanced emotions, updated every 15 minutes, normalized against
+            global topic baselines so every comparison is valid.
+          </p>
+
+          {/* CTAs */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-14">
             <Link
               href="/demo"
-              className="bg-[#FFD54F] text-black font-bold px-8 py-3.5 rounded-full text-base hover:bg-yellow-300 transition shadow-lg shadow-yellow-500/20"
+              className="bg-[#0C0F1A] text-[#F4F0E8] font-bold px-8 py-3.5 rounded-full text-base hover:bg-[#1a2240] transition shadow-lg"
             >
               Try the Demo
             </Link>
             <a
               href="#how-it-works"
-              className="border border-white/20 text-white px-8 py-3.5 rounded-full text-base hover:bg-white/5 transition"
+              className="border border-black/20 text-[#4E5A6E] px-8 py-3.5 rounded-full text-base hover:bg-black/5 transition"
             >
               How It Works
             </a>
           </div>
+
+          {/* KPI row */}
+          <div className="flex justify-center items-center gap-8 sm:gap-12">
+            <div className="text-center">
+              <div className="text-3xl font-bold text-[#0C0F1A]">82</div>
+              <div className="text-[10px] uppercase tracking-widest text-[#9AAAB8] mt-1">Emotions</div>
+            </div>
+            <div className="w-px h-10 bg-black/10" />
+            <div className="text-center">
+              <div className="text-3xl font-bold text-[#0C0F1A]">247</div>
+              <div className="text-[10px] uppercase tracking-widest text-[#9AAAB8] mt-1">Cities</div>
+            </div>
+            <div className="w-px h-10 bg-black/10" />
+            <div className="text-center">
+              <div className="text-3xl font-bold text-[#0C0F1A]">15m</div>
+              <div className="text-[10px] uppercase tracking-widest text-[#9AAAB8] mt-1">Updates</div>
+            </div>
+            <div className="w-px h-10 bg-black/10" />
+            <div className="text-center">
+              <div className="text-3xl font-bold text-[#0C0F1A]">4</div>
+              <div className="text-[10px] uppercase tracking-widest text-[#9AAAB8] mt-1">Sources</div>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Emotion Spectrum */}
-      <section className="py-16 px-6 border-y border-white/10 bg-white/[0.02]">
-        <div className="max-w-4xl mx-auto text-center">
-          <p className="text-xs uppercase tracking-widest text-white/40 mb-6">
-            Eight emotional states. One map.
+      {/* ── EMOTION SPECTRUM ── */}
+      <section id="spectrum" className="py-16 px-6 border-y border-black/[0.07] bg-white">
+        <div className="max-w-5xl mx-auto text-center">
+          <p className="text-[10px] uppercase tracking-[0.25em] text-[#9AAAB8] mb-1 font-semibold">
+            The Sentira Spectrum
           </p>
-          <div className="flex flex-wrap justify-center gap-3">
-            {emotions.map((e) => (
-              <div
-                key={e.label}
-                className="flex items-center gap-2 bg-white/5 border border-white/10 px-4 py-2 rounded-full"
-              >
-                <div className="w-2.5 h-2.5 rounded-full" style={{ background: e.color }} />
-                <span className="text-sm text-white/80">{e.label}</span>
-              </div>
+          <p className="text-xs text-[#9AAAB8] mb-8">
+            82 emotions · 12 families · ROYGBIV color system · lighter shade = gentler · darker shade = more intense
+          </p>
+
+          {/* ROYGBIV bar */}
+          <div className="flex h-1.5 rounded-full overflow-hidden max-w-2xl mx-auto mb-8 gap-0.5">
+            {["#E24B4A","#D85A30","#EF9F27","#BA7517","#639922","#1D9E75","#5DCAA5","#378ADD","#7F77DD","#D4537E"].map((c) => (
+              <div key={c} className="flex-1 rounded-full" style={{ background: c }} />
             ))}
           </div>
-        </div>
-      </section>
 
-      {/* How It Works */}
-      <section id="how-it-works" className="py-24 px-6">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold mb-3">How It Works</h2>
-            <p className="text-white/50 max-w-xl mx-auto">
-              A four-step pipeline from raw digital noise to intuitive geographic insight.
-            </p>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {steps.map((s) => (
-              <div
-                key={s.number}
-                className="bg-white/5 border border-white/10 rounded-2xl p-6 flex flex-col gap-3"
-              >
-                <span className="text-3xl font-black text-[#FFD54F]/30">{s.number}</span>
-                <h3 className="text-base font-semibold">{s.title}</h3>
-                <p className="text-sm text-white/50 leading-relaxed">{s.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Use Cases */}
-      <section id="use-cases" className="py-24 px-6 bg-white/[0.02] border-y border-white/10">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold mb-3">Who It&apos;s For</h2>
-            <p className="text-white/50 max-w-xl mx-auto">
-              Built for organizations that need fast, intuitive understanding of public sentiment at scale.
-            </p>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            {useCases.map((u) => (
-              <div
-                key={u.title}
-                className="bg-white/5 border border-white/10 rounded-2xl p-6 flex gap-4"
-              >
-                <span className="text-3xl">{u.icon}</span>
-                <div>
-                  <h3 className="font-semibold mb-1">{u.title}</h3>
-                  <p className="text-sm text-white/50 leading-relaxed">{u.desc}</p>
+          {/* Family rows */}
+          <div className="flex flex-col gap-3 text-left max-w-4xl mx-auto">
+            {emotionFamilies.map((f) => (
+              <div key={f.family} className="flex items-start gap-3">
+                <span
+                  className="text-[10px] uppercase tracking-widest min-w-[80px] pt-1 font-semibold"
+                  style={{ color: f.color }}
+                >
+                  {f.family}
+                </span>
+                <div className="flex flex-wrap gap-1.5">
+                  {f.emotions.map((e, i) => (
+                    <span
+                      key={e}
+                      className="px-2.5 py-1 rounded-full text-xs font-medium"
+                      style={{
+                        background: i < 3 ? f.light : i < 5 ? f.color + "50" : f.color,
+                        color: i < 3 ? f.dark : i < 5 ? f.dark : "#fff",
+                        border: `1px solid ${f.color}25`,
+                      }}
+                    >
+                      {e}
+                    </span>
+                  ))}
                 </div>
               </div>
             ))}
@@ -187,30 +296,133 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-24 px-6 text-center">
-        <div className="max-w-2xl mx-auto">
-          <h2 className="text-4xl font-extrabold mb-4">
-            See the world&apos;s mood,{" "}
-            <span className="text-[#FFD54F]">right now</span>
-          </h2>
-          <p className="text-white/50 mb-10">
-            Explore the interactive demo — city-level emotion aggregation, timeline playback, and
-            topic filters, running live in your browser.
-          </p>
-          <Link
-            href="/demo"
-            className="bg-[#FFD54F] text-black font-bold px-10 py-4 rounded-full text-lg hover:bg-yellow-300 transition shadow-xl shadow-yellow-500/20"
-          >
-            Launch Demo
-          </Link>
+      {/* ── HOW IT WORKS ── */}
+      <section id="how-it-works" className="py-24 px-6 bg-[#F4F0E8]">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-16">
+            <p className="text-[10px] uppercase tracking-[0.25em] text-[#0D916A] font-semibold mb-3">
+              How Sentira Works
+            </p>
+            <h2 className="text-3xl font-bold mb-3 text-[#0C0F1A]">
+              Four layers. One truth.
+            </h2>
+            <p className="text-[#4E5A6E] max-w-xl mx-auto font-light">
+              From raw digital noise to a live emotional atlas of the world.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {steps.map((s) => (
+              <div
+                key={s.number}
+                className="bg-white border border-black/[0.07] rounded-2xl p-6 flex flex-col gap-3 hover:shadow-md hover:border-black/15 transition"
+              >
+                <div className="flex items-center gap-2 mb-1">
+                  <div className="w-2 h-2 rounded-full" style={{ background: s.color }} />
+                  <span className="text-[10px] uppercase tracking-widest text-[#9AAAB8] font-semibold">
+                    Layer {s.number}
+                  </span>
+                </div>
+                <span className="text-4xl font-black text-[#0C0F1A]/[0.08]">{s.number}</span>
+                <h3 className="text-base font-semibold text-[#0C0F1A]">{s.title}</h3>
+                <p className="text-sm text-[#4E5A6E] leading-relaxed font-light">{s.desc}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-white/10 py-8 px-6 text-center text-white/30 text-sm">
-        <p>© {new Date().getFullYear()} 2026 Sentira — Andrew Wesley Blackman · Simulated data demo</p>
+      {/* ── USE CASES ── */}
+      <section id="use-cases" className="py-24 px-6 bg-white border-y border-black/[0.07]">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-16">
+            <p className="text-[10px] uppercase tracking-[0.25em] text-[#0D916A] font-semibold mb-3">
+              Who It&apos;s For
+            </p>
+            <h2 className="text-3xl font-bold mb-3 text-[#0C0F1A]">
+              Built for those who need to understand humanity.
+            </h2>
+            <p className="text-[#4E5A6E] max-w-xl mx-auto font-light">
+              From breaking news to market intelligence — Sentira gives you the emotional signal nobody else has.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            {useCases.map((u) => (
+              <div
+                key={u.title}
+                className="bg-[#F4F0E8] border border-black/[0.07] rounded-2xl p-6 hover:border-black/15 hover:shadow-sm transition relative overflow-hidden"
+              >
+                <div
+                  className="absolute top-0 left-0 right-0 h-[3px] opacity-0 hover:opacity-100 transition"
+                  style={{ background: u.accent }}
+                />
+                <div className="flex gap-4 mb-4">
+                  <span className="text-3xl">{u.icon}</span>
+                  <div>
+                    <h3 className="font-semibold mb-1 text-[#0C0F1A]">{u.title}</h3>
+                    <p className="text-sm text-[#4E5A6E] leading-relaxed font-light">{u.desc}</p>
+                  </div>
+                </div>
+                <div
+                  className="rounded-lg px-4 py-3 text-sm italic font-light text-[#4E5A6E] border-l-2"
+                  style={{ background: u.accent + "10", borderColor: u.accent }}
+                >
+                  &ldquo;{u.quote}&rdquo;
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── CTA ── */}
+      <section className="py-24 px-6 text-center bg-[#F4F0E8]">
+        <div className="max-w-2xl mx-auto">
+          <p className="text-[10px] uppercase tracking-[0.25em] text-[#0D916A] font-semibold mb-4">
+            Early Access
+          </p>
+          <h2 className="text-4xl font-extrabold mb-4 text-[#0C0F1A]">
+            See the world&apos;s mood,{" "}
+            <span className="text-[#0D916A] italic font-light">right now.</span>
+          </h2>
+          <p className="text-[#4E5A6E] mb-10 font-light leading-relaxed">
+            Explore the interactive demo — city-level emotion aggregation,
+            timeline playback, and topic filters, running live in your browser.
+          </p>
+          <Link
+            href="/demo"
+            className="inline-block bg-[#0C0F1A] text-[#F4F0E8] font-bold px-10 py-4 rounded-full text-lg hover:bg-[#1a2240] transition shadow-xl"
+          >
+            Launch Demo
+          </Link>
+          <p className="text-xs text-[#9AAAB8] mt-6">
+            Enterprise inquiries:{" "}
+            <a href="mailto:hello@sentira.net" className="text-[#0D916A] hover:underline">
+              hello@sentira.net
+            </a>
+          </p>
+        </div>
+      </section>
+
+      {/* ── FOOTER ── */}
+      <footer className="border-t border-black/[0.07] py-10 px-6 bg-[#0C0F1A]">
+        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div>
+            <p className="text-[#F4F0E8] font-bold tracking-[0.35em] text-sm uppercase mb-1">
+              Sentira
+            </p>
+            <p className="text-white/30 text-xs">
+              Signal · Emotion · Nuance · Trends · Insight · Real-time · Atlas
+            </p>
+          </div>
+          <p className="text-white/25 text-xs text-center sm:text-right">
+            © {new Date().getFullYear()} Sentira — Andrew Wesley Blackman
+            <br />
+            Simulated data demo · Data sourced ethically · No individual tracking
+          </p>
+        </div>
       </footer>
+
     </div>
   );
 }
+
