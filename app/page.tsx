@@ -64,7 +64,7 @@ export default function LandingPage() {
       <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/10 bg-[#0b1020]/80 backdrop-blur-md">
         <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
           <span className="text-lg font-bold tracking-tight">
-            <span className="text-[#FFD54F]">Mood</span>Ring
+            <span className="text-[#FFD54F]">Sentira
           </span>
           <div className="flex items-center gap-6 text-sm text-white/60">
             <a href="#how-it-works" className="hover:text-white transition">
@@ -97,7 +97,7 @@ export default function LandingPage() {
             <span className="text-[#FFD54F]">weather map</span>
           </h1>
           <p className="text-lg text-white/60 leading-relaxed max-w-2xl mx-auto mb-10">
-            Mood Ring transforms public digital expression into a live, color-coded map of
+            Sentira transforms public digital expression into a live, color-coded map of
             collective human sentiment — by city, region, and topic — in real time.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -209,7 +209,7 @@ export default function LandingPage() {
 
       {/* Footer */}
       <footer className="border-t border-white/10 py-8 px-6 text-center text-white/30 text-sm">
-        <p>© {new Date().getFullYear()} Mood Ring — Andrew Wesley Blackman · Simulated data demo</p>
+        <p>© {new Date().getFullYear()} 2026 Sentira — Andrew Wesley Blackman · Simulated data demo</p>
       </footer>
     </div>
   );
