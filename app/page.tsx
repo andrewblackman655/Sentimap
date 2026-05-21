@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 // ── 12 emotion families · 82 total emotions ─────────────────────────────────
 const emotionFamilies = [
@@ -161,6 +162,9 @@ export default function LandingPage() {
             Sentira
           </span>
           <div className="flex items-center gap-6 text-sm text-[#4E5A6E]">
+            <a href="#product" className="hover:text-[#0C0F1A] transition">
+              Product
+            </a>
             <a href="#how-it-works" className="hover:text-[#0C0F1A] transition">
               How It Works
             </a>
@@ -182,7 +186,6 @@ export default function LandingPage() {
 
       {/* ── HERO ── */}
       <section className="pt-36 pb-24 px-6 text-center relative overflow-hidden">
-        {/* Glow orb */}
         <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[700px] h-[420px] bg-[#1D9E75]/[0.07] rounded-full blur-3xl pointer-events-none" />
         <div className="relative max-w-3xl mx-auto">
 
@@ -216,10 +219,10 @@ export default function LandingPage() {
               Try the Demo
             </Link>
             <a
-              href="#how-it-works"
+              href="#product"
               className="border border-black/20 text-[#4E5A6E] px-8 py-3.5 rounded-full text-base hover:bg-black/5 transition"
             >
-              How It Works
+              See the Product
             </a>
           </div>
 
@@ -248,8 +251,98 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* ── PRODUCT SCREENSHOTS ── */}
+      <section id="product" className="py-20 px-6 bg-white border-y border-black/[0.07]">
+        <div className="max-w-6xl mx-auto">
+
+          {/* Section header */}
+          <div className="text-center mb-12">
+            <p className="text-[10px] uppercase tracking-[0.25em] text-[#0D916A] font-semibold mb-3">
+              Product Preview
+            </p>
+            <h2 className="text-3xl font-bold mb-3 text-[#0C0F1A]">
+              See Sentira in action.
+            </h2>
+            <p className="text-[#4E5A6E] max-w-xl mx-auto font-light">
+              A live emotional atlas of the world — 247 cities, 82 emotions, every 15 minutes.
+            </p>
+          </div>
+
+          {/* Main large dashboard screenshot */}
+          <div className="rounded-2xl overflow-hidden border border-black/[0.07] shadow-xl shadow-black/[0.06] mb-5">
+            <div className="bg-[#F4F0E8] border-b border-black/[0.07] px-4 py-3 flex items-center gap-2">
+              <div className="w-3 h-3 rounded-full bg-[#FF5F56]" />
+              <div className="w-3 h-3 rounded-full bg-[#FFBD2E]" />
+              <div className="w-3 h-3 rounded-full bg-[#27C93F]" />
+              <span className="ml-3 text-xs text-[#9AAAB8] font-mono">app.sentira.net/dashboard</span>
+            </div>
+            <Image
+              src="/Global View-Main Large Dashboard.png"
+              alt="Sentira main dashboard — live global emotion map with city-level data, mobile views, and the Global Emotional Index"
+              width={1340}
+              height={900}
+              className="w-full"
+              priority
+            />
+          </div>
+
+          {/* Two smaller screenshots side by side */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+
+            {/* World Map Closeup */}
+            <div className="rounded-2xl overflow-hidden border border-black/[0.07] shadow-md shadow-black/[0.04]">
+              <div className="bg-[#F4F0E8] border-b border-black/[0.07] px-4 py-3 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="w-2.5 h-2.5 rounded-full bg-[#FF5F56]" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-[#FFBD2E]" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-[#27C93F]" />
+                </div>
+                <span className="text-xs text-[#9AAAB8] font-mono">Global Emotional Overview</span>
+                <div className="w-16" />
+              </div>
+              <Image
+                src="/Global Emotional Overview-World Map Closeup.png"
+                alt="Sentira global emotional overview — world map with live emotion-colored city dots and signal feed"
+                width={1456}
+                height={816}
+                className="w-full"
+              />
+              <div className="px-4 py-3 bg-white border-t border-black/[0.07]">
+                <p className="text-xs font-semibold text-[#0C0F1A] mb-0.5">Global Emotional Overview</p>
+                <p className="text-xs text-[#9AAAB8] font-light">World map · Live signal feed · Emotion distribution · Regional snapshots</p>
+              </div>
+            </div>
+
+            {/* Emotional Atlas */}
+            <div className="rounded-2xl overflow-hidden border border-black/[0.07] shadow-md shadow-black/[0.04]">
+              <div className="bg-[#F4F0E8] border-b border-black/[0.07] px-4 py-3 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="w-2.5 h-2.5 rounded-full bg-[#FF5F56]" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-[#FFBD2E]" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-[#27C93F]" />
+                </div>
+                <span className="text-xs text-[#9AAAB8] font-mono">Emotional Atlas</span>
+                <div className="w-16" />
+              </div>
+              <Image
+                src="/Emotional Atlas-Analytics and Emotional Spectrum View.png"
+                alt="Sentira emotional atlas — full emotion spectrum organized by family with analytics, timeline, and insights"
+                width={1340}
+                height={900}
+                className="w-full"
+              />
+              <div className="px-4 py-3 bg-white border-t border-black/[0.07]">
+                <p className="text-xs font-semibold text-[#0C0F1A] mb-0.5">Emotional Atlas</p>
+                <p className="text-xs text-[#9AAAB8] font-light">Full 82-emotion spectrum · Timeline explorer · Trends &amp; insights · Location detail</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
       {/* ── EMOTION SPECTRUM ── */}
-      <section id="spectrum" className="py-16 px-6 border-y border-black/[0.07] bg-white">
+      <section id="spectrum" className="py-16 px-6 border-b border-black/[0.07] bg-[#F4F0E8]">
         <div className="max-w-5xl mx-auto text-center">
           <p className="text-[10px] uppercase tracking-[0.25em] text-[#9AAAB8] mb-1 font-semibold">
             The Sentira Spectrum
@@ -297,7 +390,7 @@ export default function LandingPage() {
       </section>
 
       {/* ── HOW IT WORKS ── */}
-      <section id="how-it-works" className="py-24 px-6 bg-[#F4F0E8]">
+      <section id="how-it-works" className="py-24 px-6 bg-white border-b border-black/[0.07]">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-16">
             <p className="text-[10px] uppercase tracking-[0.25em] text-[#0D916A] font-semibold mb-3">
@@ -314,7 +407,7 @@ export default function LandingPage() {
             {steps.map((s) => (
               <div
                 key={s.number}
-                className="bg-white border border-black/[0.07] rounded-2xl p-6 flex flex-col gap-3 hover:shadow-md hover:border-black/15 transition"
+                className="bg-[#F4F0E8] border border-black/[0.07] rounded-2xl p-6 flex flex-col gap-3 hover:shadow-md hover:border-black/15 transition"
               >
                 <div className="flex items-center gap-2 mb-1">
                   <div className="w-2 h-2 rounded-full" style={{ background: s.color }} />
@@ -332,7 +425,7 @@ export default function LandingPage() {
       </section>
 
       {/* ── USE CASES ── */}
-      <section id="use-cases" className="py-24 px-6 bg-white border-y border-black/[0.07]">
+      <section id="use-cases" className="py-24 px-6 bg-[#F4F0E8] border-b border-black/[0.07]">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-16">
             <p className="text-[10px] uppercase tracking-[0.25em] text-[#0D916A] font-semibold mb-3">
@@ -349,7 +442,7 @@ export default function LandingPage() {
             {useCases.map((u) => (
               <div
                 key={u.title}
-                className="bg-[#F4F0E8] border border-black/[0.07] rounded-2xl p-6 hover:border-black/15 hover:shadow-sm transition relative overflow-hidden"
+                className="bg-white border border-black/[0.07] rounded-2xl p-6 hover:border-black/15 hover:shadow-sm transition relative overflow-hidden"
               >
                 <div
                   className="absolute top-0 left-0 right-0 h-[3px] opacity-0 hover:opacity-100 transition"
@@ -375,7 +468,7 @@ export default function LandingPage() {
       </section>
 
       {/* ── CTA ── */}
-      <section className="py-24 px-6 text-center bg-[#F4F0E8]">
+      <section className="py-24 px-6 text-center bg-white">
         <div className="max-w-2xl mx-auto">
           <p className="text-[10px] uppercase tracking-[0.25em] text-[#0D916A] font-semibold mb-4">
             Early Access
