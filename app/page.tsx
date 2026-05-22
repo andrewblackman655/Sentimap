@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 
 // ── 12 emotion families · 82 total emotions ─────────────────────────────────
 const emotionFamilies = [
@@ -17,7 +16,6 @@ const emotionFamilies = [
   { family: "Apathy", color: "#5F5E5A", light: "#F1EFE8", dark: "#2C2C2A", emotions: ["Detachment", "Disinterest", "Boredom", "Numbness", "Apathy", "Emptiness"] },
 ];
 
-// ── 4-step pipeline ───────────────────────────────────────────────────────────
 const steps = [
   { number: "01", title: "Harvest", color: "#378ADD", desc: "Every 15 minutes, Sentira ingests from GDELT 2.0, Bluesky Jetstream, multilingual news APIs, and Telegram — over 500,000 signals per day in 100+ languages across 247 cities." },
   { number: "02", title: "Classify", color: "#7F77DD", desc: "Each signal is assigned one of 82 nuanced emotions across 12 families using AI-powered language models. Every classification also receives a topic label: disaster, sports, politics, culture, or economy." },
@@ -25,7 +23,6 @@ const steps = [
   { number: "04", title: "Visualize", color: "#EF9F27", desc: "Deviation scores render onto the live ROYGBIV emotion atlas — the world map of human feeling — with city drilldowns, timeline comparisons, event tracking, and enterprise API access." },
 ];
 
-// ── Use cases ─────────────────────────────────────────────────────────────────
 const useCases = [
   { icon: "📰", accent: "#378ADD", title: "Media & Journalism", desc: "Track collective emotional response to breaking events as they unfold. Know how the world actually feels — not just what it says — before you publish.", quote: "Sentira flagged a +22pt frustration spike in LA 40 minutes before the story broke nationally." },
   { icon: "📈", accent: "#EF9F27", title: "Financial Intelligence", desc: "Macro sentiment shifts — fear cascades, hope surges, collective apathy — routinely precede market movements. Sentira's deviation signals provide proprietary early-warning intelligence.", quote: "The Shanghai anxiety signal was 2.4σ above baseline three days before the index correction." },
@@ -37,7 +34,7 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-[#F4F0E8] text-[#0C0F1A] font-sans">
 
-      {/* ── NAV ── */}
+      {/* NAV */}
       <nav className="fixed top-0 left-0 right-0 z-50 border-b border-black/[0.07] bg-white/92 backdrop-blur-md">
         <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
           <span className="text-base font-bold tracking-[0.35em] text-[#0C0F1A] uppercase">Sentira</span>
@@ -53,7 +50,7 @@ export default function LandingPage() {
         </div>
       </nav>
 
-      {/* ── HERO ── */}
+      {/* HERO */}
       <section className="pt-36 pb-24 px-6 text-center relative overflow-hidden">
         <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[700px] h-[420px] bg-[#1D9E75]/[0.07] rounded-full blur-3xl pointer-events-none" />
         <div className="relative max-w-3xl mx-auto">
@@ -89,7 +86,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── PRODUCT SCREENSHOTS ── */}
+      {/* PRODUCT SCREENSHOTS */}
       <section id="product" className="py-20 px-6 bg-white border-y border-black/[0.07]">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
@@ -98,7 +95,7 @@ export default function LandingPage() {
             <p className="text-[#4E5A6E] max-w-xl mx-auto font-light">A live emotional atlas of the world — 247 cities, 82 emotions, every 15 minutes.</p>
           </div>
 
-          {/* Image 1 — Main Dashboard · full width */}
+          {/* Image 1 — dashboard — full width */}
           <div className="rounded-2xl overflow-hidden border border-black/[0.07] shadow-xl shadow-black/[0.06] mb-5">
             <div className="bg-[#F4F0E8] border-b border-black/[0.07] px-4 py-3 flex items-center gap-2">
               <div className="w-3 h-3 rounded-full bg-[#FF5F56]" />
@@ -106,13 +103,11 @@ export default function LandingPage() {
               <div className="w-3 h-3 rounded-full bg-[#27C93F]" />
               <span className="ml-3 text-xs text-[#9AAAB8] font-mono">app.sentira.net/dashboard</span>
             </div>
-            <Image
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
               src="/dashboard.png"
-              alt="Sentira main dashboard — live global emotion map with real-time city data and the Global Emotional Index"
-              width={1920}
-              height={1080}
-              className="w-full"
-              priority
+              alt="Sentira main dashboard — live global emotion map with real-time city data"
+              style={{ width: "100%", display: "block" }}
             />
             <div className="px-5 py-3 bg-white border-t border-black/[0.07] flex items-center justify-between">
               <p className="text-xs font-semibold text-[#0C0F1A]">Main Dashboard</p>
@@ -120,7 +115,7 @@ export default function LandingPage() {
             </div>
           </div>
 
-          {/* Images 2 & 3 — World Map + Analytics · side by side */}
+          {/* Images 2 & 3 — worldmap + analytics — side by side */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
             <div className="rounded-2xl overflow-hidden border border-black/[0.07] shadow-md shadow-black/[0.04]">
               <div className="bg-[#F4F0E8] border-b border-black/[0.07] px-4 py-3 flex items-center gap-2">
@@ -129,12 +124,11 @@ export default function LandingPage() {
                 <div className="w-2.5 h-2.5 rounded-full bg-[#27C93F]" />
                 <span className="ml-2 text-xs text-[#9AAAB8] font-mono">World Map</span>
               </div>
-              <Image
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
                 src="/worldmap.png"
-                alt="Sentira cartographic world map with vivid emotion-colored city dots on parchment background"
-                width={1200}
-                height={750}
-                className="w-full"
+                alt="Sentira cartographic world map with vivid emotion-colored city dots"
+                style={{ width: "100%", display: "block" }}
               />
               <div className="px-4 py-3 bg-white border-t border-black/[0.07]">
                 <p className="text-xs font-semibold text-[#0C0F1A] mb-0.5">Cartographic Emotion Map</p>
@@ -148,12 +142,11 @@ export default function LandingPage() {
                 <div className="w-2.5 h-2.5 rounded-full bg-[#27C93F]" />
                 <span className="ml-2 text-xs text-[#9AAAB8] font-mono">Analytics</span>
               </div>
-              <Image
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
                 src="/analytics.png"
-                alt="Sentira emotion deviation analytics showing Los Angeles case study with ROYGBIV spectrum and city comparison"
-                width={1200}
-                height={900}
-                className="w-full"
+                alt="Sentira emotion analytics showing deviation scoring and city comparison"
+                style={{ width: "100%", display: "block" }}
               />
               <div className="px-4 py-3 bg-white border-t border-black/[0.07]">
                 <p className="text-xs font-semibold text-[#0C0F1A] mb-0.5">Emotion Analytics</p>
@@ -162,7 +155,7 @@ export default function LandingPage() {
             </div>
           </div>
 
-          {/* Images 4, 5, 6 — Mobile + Comparison + Case Study · three columns */}
+          {/* Images 4, 5, 6 — mobile + comparison + casestudy — three columns */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
             <div className="rounded-2xl overflow-hidden border border-black/[0.07] shadow-md shadow-black/[0.04]">
               <div className="bg-[#F4F0E8] border-b border-black/[0.07] px-4 py-3 flex items-center gap-2">
@@ -171,12 +164,11 @@ export default function LandingPage() {
                 <div className="w-2.5 h-2.5 rounded-full bg-[#27C93F]" />
                 <span className="ml-2 text-xs text-[#9AAAB8] font-mono">Mobile</span>
               </div>
-              <Image
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
                 src="/mobile.png"
-                alt="Sentira mobile app on iPhone showing emotion map and live signal feed"
-                width={900}
-                height={1200}
-                className="w-full"
+                alt="Sentira mobile app on iPhone"
+                style={{ width: "100%", display: "block" }}
               />
               <div className="px-4 py-3 bg-white border-t border-black/[0.07]">
                 <p className="text-xs font-semibold text-[#0C0F1A] mb-0.5">Mobile App</p>
@@ -190,12 +182,11 @@ export default function LandingPage() {
                 <div className="w-2.5 h-2.5 rounded-full bg-[#27C93F]" />
                 <span className="ml-2 text-xs text-[#9AAAB8] font-mono">Comparison</span>
               </div>
-              <Image
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
                 src="/comparison.png"
-                alt="Sentira vs competitors — 3 basic emotions vs 82 nuanced Sentira emotions"
-                width={1200}
-                height={900}
-                className="w-full"
+                alt="3 basic emotions vs 82 Sentira emotions"
+                style={{ width: "100%", display: "block" }}
               />
               <div className="px-4 py-3 bg-white border-t border-black/[0.07]">
                 <p className="text-xs font-semibold text-[#0C0F1A] mb-0.5">Why Sentira</p>
@@ -209,12 +200,11 @@ export default function LandingPage() {
                 <div className="w-2.5 h-2.5 rounded-full bg-[#27C93F]" />
                 <span className="ml-2 text-xs text-[#9AAAB8] font-mono">Case Study</span>
               </div>
-              <Image
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
                 src="/casestudy.png"
-                alt="Los Angeles emotional shift — April 2026 grief and sadness vs May 2026 excitement and joy"
-                width={1200}
-                height={900}
-                className="w-full"
+                alt="Los Angeles April vs May 2026 emotional shift"
+                style={{ width: "100%", display: "block" }}
               />
               <div className="px-4 py-3 bg-white border-t border-black/[0.07]">
                 <p className="text-xs font-semibold text-[#0C0F1A] mb-0.5">Live Case Study</p>
@@ -225,7 +215,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── EMOTION SPECTRUM ── */}
+      {/* EMOTION SPECTRUM */}
       <section id="spectrum" className="py-16 px-6 border-b border-black/[0.07] bg-[#F4F0E8]">
         <div className="max-w-5xl mx-auto text-center">
           <p className="text-[10px] uppercase tracking-[0.25em] text-[#9AAAB8] mb-1 font-semibold">The Sentira Spectrum</p>
@@ -258,7 +248,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── HOW IT WORKS ── */}
+      {/* HOW IT WORKS */}
       <section id="how-it-works" className="py-24 px-6 bg-white border-b border-black/[0.07]">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-16">
@@ -282,7 +272,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── USE CASES ── */}
+      {/* USE CASES */}
       <section id="use-cases" className="py-24 px-6 bg-[#F4F0E8] border-b border-black/[0.07]">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-16">
@@ -310,7 +300,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── CTA ── */}
+      {/* CTA */}
       <section className="py-24 px-6 text-center bg-white">
         <div className="max-w-2xl mx-auto">
           <p className="text-[10px] uppercase tracking-[0.25em] text-[#0D916A] font-semibold mb-4">Early Access</p>
@@ -331,7 +321,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── FOOTER ── */}
+      {/* FOOTER */}
       <footer className="border-t border-black/[0.07] py-10 px-6 bg-[#0C0F1A]">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <div>
