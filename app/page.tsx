@@ -19,27 +19,68 @@ const emotionFamilies = [
   { family: "Apathy", color: "#5F5E5A", light: "#F1EFE8", dark: "#2C2C2A", emotions: ["Detachment", "Disinterest", "Boredom", "Numbness", "Apathy", "Emptiness"] },
 ];
 
+// ── 5-layer pipeline ──────────────────────────────────────────────────────────
 const steps = [
-  { number: "00", title: "Declare", color: "#0D916A", desc: "Visitors to sentira.net choose how they feel right now from 82 emotions across 12 families — anonymous, no account required. These direct declarations are geo-tagged and weighted at 15% of the city aggregate." },
-  { number: "01", title: "Harvest", color: "#378ADD", desc: "Every 15 minutes, Sentira ingests from GDELT 2.0, Bluesky Jetstream, multilingual news APIs, and Telegram — over 500,000 signals per day in 100+ languages across 247 cities." },
-  { number: "02", title: "Classify", color: "#7F77DD", desc: "Each signal is assigned one of 82 nuanced emotions across 12 families using AI-powered language models. Every classification also receives a topic label: disaster, sports, politics, culture, or economy." },
-  { number: "03", title: "Normalize", color: "#1D9E75", desc: "Raw scores are measured against Sentira\'s topic baselines — the expected emotional distribution for that event type. The deviation score is the real signal. This is what makes city-to-city comparison valid." },
-  { number: "04", title: "Visualize", color: "#EF9F27", desc: "Deviation scores render onto the live ROYGBIV emotion atlas — the world map of human feeling — with city drilldowns, timeline comparisons, event tracking, and enterprise API access." },
+  {
+    number: "00", title: "Declare", color: "#0D916A",
+    desc: "Visitors to sentira.net choose how they feel right now from 82 emotions across 12 families — anonymous, no account required. These direct declarations are geo-tagged and weighted at 15% of the city aggregate.",
+  },
+  {
+    number: "01", title: "Harvest", color: "#378ADD",
+    desc: "Every 15 minutes, Sentira ingests tens of thousands of open web signals — major news publications, wire services, and public digital channels tracked by GDELT 2.0 and leading news intelligence APIs — across every major global market.",
+  },
+  {
+    number: "02", title: "Classify", color: "#7F77DD",
+    desc: "Each signal is assigned one of 82 nuanced emotions across 12 families using AI-powered language models. Every classification also receives a topic label: disaster, sports, politics, culture, or economy.",
+  },
+  {
+    number: "03", title: "Normalize", color: "#1D9E75",
+    desc: "The deviation score is Sentira's proprietary signal. Every emotion reading is measured against the specific baseline for that topic in that city. A city's anxiety about economic news only means something when measured against how anxious that city normally is about economic news. That comparison is the intelligence.",
+  },
+  {
+    number: "04", title: "Visualize", color: "#EF9F27",
+    desc: "Deviation scores render onto the live ROYGBIV emotion atlas — geographic deviation intelligence in color, not text. City drilldowns, timeline comparisons, event tracking, and enterprise API access.",
+  },
 ];
 
+// ── Use cases — enterprise voice ──────────────────────────────────────────────
 const useCases = [
-  { icon: "📰", accent: "#378ADD", title: "Media & Journalism", desc: "Track collective emotional response to breaking events as they unfold. Know how the world actually feels — not just what it says — before you publish.", quote: "Sentira flagged a +22pt frustration spike in LA 40 minutes before the story broke nationally." },
-  { icon: "📈", accent: "#EF9F27", title: "Financial Intelligence", desc: "Macro sentiment shifts — fear cascades, hope surges, collective apathy — routinely precede market movements. Sentira's deviation signals provide proprietary early-warning intelligence.", quote: "The Shanghai anxiety signal was 2.4σ above baseline three days before the index correction." },
-  { icon: "🔬", accent: "#639922", title: "Academic Research", desc: "Population-scale emotional data, ethically sourced and depersonalized. Historical baselines going back to 2015 enable longitudinal studies at global scale.", quote: "The first platform to distinguish Dread from Fear in real-time population data." },
-  { icon: "📣", accent: "#D4537E", title: "Brand Strategy", desc: "Know when your target market is in a receptive emotional state. Measure how your campaign lands relative to the emotional baseline — not just the noise floor.", quote: "We delayed the campaign 9 days based on Sentira's signal. The re-timed launch outperformed by 34%." },
+  {
+    icon: "📡",
+    accent: "#378ADD",
+    title: "News Intelligence",
+    desc: "Track the emotional deviation of cities in response to breaking events — not what the headlines say, but how differently audiences feel compared to their own baseline. Know the story before it becomes the story.",
+    quote: "We tracked emotional deviation across six European cities during the election cycle. Sentira showed the anxiety signal peaking 72 hours before the vote. Nothing else in our stack had it.",
+  },
+  {
+    icon: "📈",
+    accent: "#EF9F27",
+    title: "Financial Intelligence",
+    desc: "Macro emotional deviation routinely precedes market movement. A city running 2.4 standard deviations above its economic anxiety baseline is not a sentiment score — it is a proprietary early-warning signal your existing data feeds do not carry.",
+    quote: "The Shanghai deviation score ran above economic anxiety baseline for three consecutive 15-minute windows before the index moved. That is not coincidence.",
+  },
+  {
+    icon: "🔬",
+    accent: "#639922",
+    title: "Institutional Research",
+    desc: "The first platform to distinguish between Dread and Apprehension at city scale, in real time, with historical baselines. Population-scale emotional deviation data, ethically sourced, depersonalized, and available via API for longitudinal study.",
+    quote: "For the first time we have a dataset that distinguishes named emotions at city scale across 18 months of historical baseline. That is a decade of research compressed.",
+  },
+  {
+    icon: "🎯",
+    accent: "#D4537E",
+    title: "Campaign Intelligence",
+    desc: "A city running above frustration baseline on economic news is not the right moment for a luxury product launch. A city surging above its joy baseline for cultural events is. Sentira tells you which moment you are in before you spend the budget.",
+    quote: "We held the launch. Sentira showed target cities above frustration baseline. We waited 11 days. The re-timed launch exceeded projections by 34%.",
+  },
 ];
 
-// ── City names for pulse check confirmation preview ───────────────────────────
+// ── City names for pulse check confirmation ───────────────────────────────────
 const cities = ["Los Angeles", "New York", "London", "Tokyo", "Chicago", "Sydney", "Toronto", "Berlin"];
 
 export default function LandingPage() {
 
-  // ── Pulse check state ──────────────────────────────────────────────────────
+  // Pulse check state
   const [pulseFamily, setPulseFamily] = useState<typeof emotionFamilies[0] | null>(null);
   const [pulseDone, setPulseDone] = useState(false);
   const randomCity = cities[Math.floor(Math.random() * cities.length)];
@@ -54,7 +95,7 @@ export default function LandingPage() {
     setPulseDone(false);
   }
 
-  // ── Waitlist state ─────────────────────────────────────────────────────────
+  // Waitlist state
   const [waitlistEmail, setWaitlistEmail] = useState("");
   const [waitlistDone, setWaitlistDone] = useState(false);
 
@@ -69,15 +110,18 @@ export default function LandingPage() {
       {/* ── NAV ── */}
       <nav className="fixed top-0 left-0 right-0 z-50 border-b border-black/[0.07] bg-white/92 backdrop-blur-md">
         <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
-          <span className="text-base font-bold tracking-[0.35em] text-[#0C0F1A] uppercase">Sentira</span>
+          <div>
+            <span className="text-base font-bold tracking-[0.35em] text-[#0C0F1A] uppercase">Sentira</span>
+            <span className="ml-3 text-[10px] text-[#9AAAB8] uppercase tracking-widest hidden sm:inline">Deviation Intelligence Platform · Privacy-First</span>
+          </div>
           <div className="flex items-center gap-6 text-sm text-[#4E5A6E]">
             <a href="#pulse" className="hover:text-[#0C0F1A] transition">Check In</a>
             <a href="#product" className="hover:text-[#0C0F1A] transition">Product</a>
             <a href="#how-it-works" className="hover:text-[#0C0F1A] transition">How It Works</a>
-            <a href="#use-cases" className="hover:text-[#0C0F1A] transition">Use Cases</a>
-            <Link href="/demo" className="bg-[#0C0F1A] text-[#F4F0E8] font-semibold px-4 py-1.5 rounded-full text-sm hover:bg-[#1a2240] transition">
-              Try Demo
-            </Link>
+            <a href="#use-cases" className="hover:text-[#0C0F1A] transition">Solutions</a>
+            <a href="mailto:hello@sentira.net" className="bg-[#0C0F1A] text-[#F4F0E8] font-semibold px-4 py-1.5 rounded-full text-sm hover:bg-[#1a2240] transition">
+              Enterprise Access
+            </a>
           </div>
         </div>
       </nav>
@@ -86,34 +130,61 @@ export default function LandingPage() {
       <section className="pt-36 pb-20 px-6 text-center relative overflow-hidden">
         <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[700px] h-[420px] bg-[#1D9E75]/[0.07] rounded-full blur-3xl pointer-events-none" />
         <div className="relative max-w-3xl mx-auto">
+
+          {/* Platform badge */}
           <div className="inline-flex items-center gap-2 bg-[#1D9E75]/10 border border-[#1D9E75]/25 text-[#0D916A] text-xs px-4 py-1.5 rounded-full mb-8 font-semibold tracking-[0.15em] uppercase">
             <span className="w-1.5 h-1.5 rounded-full bg-[#0D916A] animate-pulse" />
-            Beta Waitlist — Now Open
+            Deviation Intelligence Platform · Beta Access Open
           </div>
-          <h1 className="text-5xl sm:text-6xl font-extrabold tracking-tight leading-[1.05] mb-6 text-[#0C0F1A]">
+
+          {/* Headline */}
+          <h1 className="text-5xl sm:text-6xl font-extrabold tracking-tight leading-[1.05] mb-4 text-[#0C0F1A]">
             The world has<br />
             <span className="text-[#0D916A] font-light italic">feelings.</span>
           </h1>
-          <p className="text-lg text-[#4E5A6E] leading-relaxed max-w-xl mx-auto mb-3 font-light">Now you can read them.</p>
-          <p className="text-base text-[#9AAAB8] leading-relaxed max-w-2xl mx-auto mb-10 font-light">
-            Sentira is an Emotional Intelligence Platform that maps collective human emotion across 247 cities in real time — 82 nuanced emotions, updated every 15 minutes, normalized against global topic baselines so every comparison is valid.
+
+          {/* Master tagline */}
+          <p className="text-xl sm:text-2xl font-light text-[#0C0F1A] mb-6 tracking-tight">
+            Not what the world feels.<br />
+            <span className="font-semibold">How differently it feels.</span>
           </p>
+
+          {/* Platform description */}
+          <p className="text-base text-[#9AAAB8] leading-relaxed max-w-2xl mx-auto mb-10 font-light">
+            Sentira is a real-time deviation intelligence platform. We map not what cities feel — but how differently they feel compared to what the world expects. Powered by the open web. Organized by a proprietary 82-emotion taxonomy. Updated every 15 minutes.
+          </p>
+
+          {/* CTAs */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-14">
-            <a href="#pulse" className="bg-[#0C0F1A] text-[#F4F0E8] font-bold px-8 py-3.5 rounded-full text-base hover:bg-[#1a2240] transition shadow-lg">
+            <a href="mailto:hello@sentira.net" className="bg-[#0C0F1A] text-[#F4F0E8] font-bold px-8 py-3.5 rounded-full text-base hover:bg-[#1a2240] transition shadow-lg">
+              Request enterprise access
+            </a>
+            <a href="#pulse" className="border border-black/20 text-[#4E5A6E] px-8 py-3.5 rounded-full text-base hover:bg-black/5 transition">
               How are you feeling?
             </a>
-            <a href="#product" className="border border-black/20 text-[#4E5A6E] px-8 py-3.5 rounded-full text-base hover:bg-black/5 transition">
-              See the Product
-            </a>
           </div>
+
+          {/* KPI row */}
           <div className="flex justify-center items-center gap-8 sm:gap-12">
-            <div className="text-center"><div className="text-3xl font-bold text-[#0C0F1A]">82</div><div className="text-[10px] uppercase tracking-widest text-[#9AAAB8] mt-1">Emotions</div></div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-[#0C0F1A]">82</div>
+              <div className="text-[10px] uppercase tracking-widest text-[#9AAAB8] mt-1">Emotions</div>
+            </div>
             <div className="w-px h-10 bg-black/10" />
-            <div className="text-center"><div className="text-3xl font-bold text-[#0C0F1A]">247</div><div className="text-[10px] uppercase tracking-widest text-[#9AAAB8] mt-1">Cities</div></div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-[#0C0F1A]">Global</div>
+              <div className="text-[10px] uppercase tracking-widest text-[#9AAAB8] mt-1">Coverage</div>
+            </div>
             <div className="w-px h-10 bg-black/10" />
-            <div className="text-center"><div className="text-3xl font-bold text-[#0C0F1A]">15m</div><div className="text-[10px] uppercase tracking-widest text-[#9AAAB8] mt-1">Updates</div></div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-[#0C0F1A]">15m</div>
+              <div className="text-[10px] uppercase tracking-widest text-[#9AAAB8] mt-1">Updates</div>
+            </div>
             <div className="w-px h-10 bg-black/10" />
-            <div className="text-center"><div className="text-3xl font-bold text-[#0C0F1A]">4</div><div className="text-[10px] uppercase tracking-widest text-[#9AAAB8] mt-1">Sources</div></div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-[#0C0F1A]">Open</div>
+              <div className="text-[10px] uppercase tracking-widest text-[#9AAAB8] mt-1">Web</div>
+            </div>
           </div>
         </div>
       </section>
@@ -121,7 +192,6 @@ export default function LandingPage() {
       {/* ── PULSE CHECK ── */}
       <section id="pulse" className="py-20 px-6 bg-white border-y border-black/[0.07]">
         <div className="max-w-3xl mx-auto text-center">
-
           {!pulseDone ? (
             <>
               <div className="inline-flex items-center gap-2 bg-[#1D9E75]/10 border border-[#1D9E75]/25 text-[#0D916A] text-xs px-4 py-1.5 rounded-full mb-6 font-semibold tracking-[0.15em] uppercase">
@@ -132,8 +202,11 @@ export default function LandingPage() {
                 How are you feeling<br />
                 <span className="text-[#0D916A] font-light italic">right now?</span>
               </h2>
-              <p className="text-[#9AAAB8] mb-10 font-light text-sm">
-                Select the emotion family that best describes how you feel. Your signal joins the live Sentira atlas — anonymous and immediate.
+              <p className="text-[#9AAAB8] mb-6 font-light text-sm">
+                Select the emotion family that best describes how you feel. Your signal joins the live Sentira deviation atlas — anonymous and immediate.
+              </p>
+              <p className="text-[10px] text-[#C8C4BA] mb-8 font-light">
+                Your IP is used only to identify your city and is immediately discarded. No personal data is stored. No account required.
               </p>
               <div className="grid grid-cols-3 sm:grid-cols-4 gap-3 max-w-2xl mx-auto">
                 {emotionFamilies.map((f) => (
@@ -141,45 +214,31 @@ export default function LandingPage() {
                     key={f.family}
                     onClick={() => handlePulse(f)}
                     className="flex flex-col items-center gap-2 p-4 rounded-2xl border transition-all hover:scale-105 hover:shadow-md active:scale-95"
-                    style={{
-                      background: f.light,
-                      borderColor: f.color + "30",
-                    }}
+                    style={{ background: f.light, borderColor: f.color + "30" }}
                   >
-                    <div
-                      className="w-9 h-9 rounded-full shadow-sm"
-                      style={{ background: f.color }}
-                    />
-                    <span className="text-xs font-semibold" style={{ color: f.dark }}>
-                      {f.family}
-                    </span>
+                    <div className="w-9 h-9 rounded-full shadow-sm" style={{ background: f.color }} />
+                    <span className="text-xs font-semibold" style={{ color: f.dark }}>{f.family}</span>
                   </button>
                 ))}
               </div>
               <p className="text-[10px] uppercase tracking-widest text-[#C8C4BA] mt-8">
-                Full emotion check-in launching soon — 82 emotions · topic tagging · personal history
+                Full check-in launching soon — anonymous tier · personal history (opt-in) · enterprise deviation API
               </p>
             </>
           ) : (
             <>
-              {/* Confirmation */}
               <div
                 className="w-14 h-14 rounded-full mx-auto mb-5 flex items-center justify-center shadow-md"
                 style={{ background: pulseFamily?.light }}
               >
-                <div
-                  className="w-8 h-8 rounded-full"
-                  style={{ background: pulseFamily?.color }}
-                />
+                <div className="w-8 h-8 rounded-full" style={{ background: pulseFamily?.color }} />
               </div>
               <h2 className="text-2xl font-bold mb-2 text-[#0C0F1A]">Signal received.</h2>
               <p className="text-[#9AAAB8] font-light text-sm mb-8">
-                Your <strong style={{ color: pulseFamily?.color }}>{pulseFamily?.family}</strong> signal has been added to the live Sentira atlas.
+                Your <strong style={{ color: pulseFamily?.color }}>{pulseFamily?.family}</strong> signal has been added to the live Sentira deviation atlas.
               </p>
-
-              {/* Feed preview */}
               <div className="bg-[#F4F0E8] border border-black/[0.07] rounded-2xl p-5 text-left max-w-xl mx-auto mb-6">
-                <p className="text-[10px] uppercase tracking-widest text-[#9AAAB8] mb-3 font-semibold">Your signal in the live feed</p>
+                <p className="text-[10px] uppercase tracking-widest text-[#9AAAB8] mb-3 font-semibold">Your signal in the deviation feed</p>
                 <div className="flex items-start gap-3">
                   <div
                     className="w-5 h-5 rounded-full flex-shrink-0 mt-0.5 border-2"
@@ -188,24 +247,21 @@ export default function LandingPage() {
                   <div className="flex-1">
                     <div className="flex flex-wrap items-center gap-2 mb-1.5">
                       <span className="text-sm font-semibold text-[#0C0F1A]">{randomCity}</span>
-                      <span
-                        className="text-xs px-2.5 py-0.5 rounded-full font-semibold"
-                        style={{ background: pulseFamily?.light, color: pulseFamily?.dark }}
-                      >
+                      <span className="text-xs px-2.5 py-0.5 rounded-full font-semibold"
+                        style={{ background: pulseFamily?.light, color: pulseFamily?.dark }}>
                         {pulseFamily?.family}
                       </span>
                       <span className="text-xs px-2.5 py-0.5 rounded-full bg-[#E8F5F1] text-[#0D916A] font-semibold">
-                        direct signal
+                        declared · Layer 0
                       </span>
                       <span className="text-xs text-[#9AAAB8]">just now</span>
                     </div>
                     <p className="text-xs text-[#9AAAB8] font-light">
-                      Anonymous · weighted at 15% of city aggregate · anomaly-checked
+                      Anonymous · weighted at 15% of city deviation aggregate · anomaly-checked against passive baseline
                     </p>
                   </div>
                 </div>
               </div>
-
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <button
                   onClick={resetPulse}
@@ -234,14 +290,11 @@ export default function LandingPage() {
                 <span className="w-1.5 h-1.5 rounded-full bg-[#0D916A] animate-pulse" />
                 Coming Soon
               </div>
-              <h3 className="text-xl font-bold text-[#0C0F1A] mb-2">
-                Want the full emotion check-in?
-              </h3>
+              <h3 className="text-xl font-bold text-[#0C0F1A] mb-2">Want the full emotion check-in?</h3>
               <p className="text-sm text-[#4E5A6E] font-light leading-relaxed max-w-sm">
-                Be notified when Sentira&apos;s direct emotion check-in launches — with 82-emotion depth, personal history, city comparisons, and your emotional fingerprint over time.
+                Be notified when the full check-in launches. Anonymous signals feed the live atlas. Optional account creation unlocks your personal emotion history — always private, always yours.
               </p>
             </div>
-
             <div className="w-full sm:w-auto flex-shrink-0">
               {!waitlistDone ? (
                 <form onSubmit={handleWaitlist} className="flex flex-col sm:flex-row gap-3">
@@ -253,10 +306,7 @@ export default function LandingPage() {
                     placeholder="your@email.com"
                     className="flex-1 sm:w-56 bg-[#F4F0E8] border border-black/[0.12] rounded-full px-5 py-3 text-sm text-[#0C0F1A] placeholder:text-[#9AAAB8] outline-none focus:border-[#0D916A] transition font-sans"
                   />
-                  <button
-                    type="submit"
-                    className="bg-[#0C0F1A] text-[#F4F0E8] font-semibold px-6 py-3 rounded-full text-sm hover:bg-[#1a2240] transition whitespace-nowrap"
-                  >
+                  <button type="submit" className="bg-[#0C0F1A] text-[#F4F0E8] font-semibold px-6 py-3 rounded-full text-sm hover:bg-[#1a2240] transition whitespace-nowrap">
                     Notify me
                   </button>
                 </form>
@@ -273,9 +323,7 @@ export default function LandingPage() {
                   </div>
                 </div>
               )}
-              <p className="text-[10px] text-[#C8C4BA] mt-2 text-center sm:text-left">
-                No spam. Unsubscribe anytime.
-              </p>
+              <p className="text-[10px] text-[#C8C4BA] mt-2 text-center sm:text-left">No spam. Unsubscribe anytime.</p>
             </div>
           </div>
         </div>
@@ -285,9 +333,9 @@ export default function LandingPage() {
       <section id="product" className="py-20 px-6 bg-white border-b border-black/[0.07]">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
-            <p className="text-[10px] uppercase tracking-[0.25em] text-[#0D916A] font-semibold mb-3">Product Preview</p>
-            <h2 className="text-3xl font-bold mb-3 text-[#0C0F1A]">See Sentira in action.</h2>
-            <p className="text-[#4E5A6E] max-w-xl mx-auto font-light">A live emotional atlas of the world — 247 cities, 82 emotions, every 15 minutes.</p>
+            <p className="text-[10px] uppercase tracking-[0.25em] text-[#0D916A] font-semibold mb-3">Intelligence Platform Preview</p>
+            <h2 className="text-3xl font-bold mb-3 text-[#0C0F1A]">Geographic deviation intelligence.<br />In color, not text.</h2>
+            <p className="text-[#4E5A6E] max-w-xl mx-auto font-light">Real-time deviation intelligence across global markets — color-coded by emotion, normalized against city baselines, updated every 15 minutes.</p>
           </div>
 
           {/* Image 1 — dashboard — full width */}
@@ -296,13 +344,13 @@ export default function LandingPage() {
               <div className="w-3 h-3 rounded-full bg-[#FF5F56]" />
               <div className="w-3 h-3 rounded-full bg-[#FFBD2E]" />
               <div className="w-3 h-3 rounded-full bg-[#27C93F]" />
-              <span className="ml-3 text-xs text-[#9AAAB8] font-mono">app.sentira.net/dashboard</span>
+              <span className="ml-3 text-xs text-[#9AAAB8] font-mono">app.sentira.net/dashboard · live deviation intelligence</span>
             </div>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/dashboard.png" alt="Sentira main dashboard" style={{ width: "100%", display: "block" }} />
+            <img src="/dashboard.png" alt="Sentira deviation intelligence dashboard — live global emotion map with city-level deviation scores" style={{ width: "100%", display: "block" }} />
             <div className="px-5 py-3 bg-white border-t border-black/[0.07] flex items-center justify-between">
-              <p className="text-xs font-semibold text-[#0C0F1A]">Main Dashboard</p>
-              <p className="text-xs text-[#9AAAB8] font-light">Live map · Global Index · Signal feed · Mobile views</p>
+              <p className="text-xs font-semibold text-[#0C0F1A]">Live Deviation Dashboard</p>
+              <p className="text-xs text-[#9AAAB8] font-light">Global deviation atlas · City signals · Baseline comparisons · Mobile views</p>
             </div>
           </div>
 
@@ -311,25 +359,25 @@ export default function LandingPage() {
             <div className="rounded-2xl overflow-hidden border border-black/[0.07] shadow-md shadow-black/[0.04]">
               <div className="bg-[#F4F0E8] border-b border-black/[0.07] px-4 py-3 flex items-center gap-2">
                 <div className="w-2.5 h-2.5 rounded-full bg-[#FF5F56]" /><div className="w-2.5 h-2.5 rounded-full bg-[#FFBD2E]" /><div className="w-2.5 h-2.5 rounded-full bg-[#27C93F]" />
-                <span className="ml-2 text-xs text-[#9AAAB8] font-mono">World Map</span>
+                <span className="ml-2 text-xs text-[#9AAAB8] font-mono">Deviation Atlas</span>
               </div>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/worldmap.png" alt="Sentira cartographic world map" style={{ width: "100%", display: "block" }} />
+              <img src="/worldmap.png" alt="Sentira geographic deviation atlas" style={{ width: "100%", display: "block" }} />
               <div className="px-4 py-3 bg-white border-t border-black/[0.07]">
-                <p className="text-xs font-semibold text-[#0C0F1A] mb-0.5">Cartographic Emotion Map</p>
-                <p className="text-xs text-[#9AAAB8] font-light">Parchment aesthetic · Live city dots · ROYGBIV emotion colors</p>
+                <p className="text-xs font-semibold text-[#0C0F1A] mb-0.5">Geographic Deviation Atlas</p>
+                <p className="text-xs text-[#9AAAB8] font-light">ROYGBIV deviation colors · Live city signals · Open web sourced</p>
               </div>
             </div>
             <div className="rounded-2xl overflow-hidden border border-black/[0.07] shadow-md shadow-black/[0.04]">
               <div className="bg-[#F4F0E8] border-b border-black/[0.07] px-4 py-3 flex items-center gap-2">
                 <div className="w-2.5 h-2.5 rounded-full bg-[#FF5F56]" /><div className="w-2.5 h-2.5 rounded-full bg-[#FFBD2E]" /><div className="w-2.5 h-2.5 rounded-full bg-[#27C93F]" />
-                <span className="ml-2 text-xs text-[#9AAAB8] font-mono">Analytics</span>
+                <span className="ml-2 text-xs text-[#9AAAB8] font-mono">Deviation Analytics</span>
               </div>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/analytics.png" alt="Sentira emotion analytics" style={{ width: "100%", display: "block" }} />
+              <img src="/analytics.png" alt="Sentira deviation analytics" style={{ width: "100%", display: "block" }} />
               <div className="px-4 py-3 bg-white border-t border-black/[0.07]">
-                <p className="text-xs font-semibold text-[#0C0F1A] mb-0.5">Emotion Analytics</p>
-                <p className="text-xs text-[#9AAAB8] font-light">Deviation scoring · City comparison · ROYGBIV spectrum</p>
+                <p className="text-xs font-semibold text-[#0C0F1A] mb-0.5">Deviation Analytics</p>
+                <p className="text-xs text-[#9AAAB8] font-light">Baseline comparison · City deviation scores · ROYGBIV spectrum</p>
               </div>
             </div>
           </div>
@@ -342,22 +390,22 @@ export default function LandingPage() {
                 <span className="ml-2 text-xs text-[#9AAAB8] font-mono">Mobile</span>
               </div>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/mobile.png" alt="Sentira mobile app on iPhone" style={{ width: "100%", display: "block" }} />
+              <img src="/mobile.png" alt="Sentira mobile deviation intelligence" style={{ width: "100%", display: "block" }} />
               <div className="px-4 py-3 bg-white border-t border-black/[0.07]">
-                <p className="text-xs font-semibold text-[#0C0F1A] mb-0.5">Mobile App</p>
-                <p className="text-xs text-[#9AAAB8] font-light">iOS · Emotion map · Live feed</p>
+                <p className="text-xs font-semibold text-[#0C0F1A] mb-0.5">Mobile Intelligence</p>
+                <p className="text-xs text-[#9AAAB8] font-light">Deviation atlas · Live signals · On the move</p>
               </div>
             </div>
             <div className="rounded-2xl overflow-hidden border border-black/[0.07] shadow-md shadow-black/[0.04]">
               <div className="bg-[#F4F0E8] border-b border-black/[0.07] px-4 py-3 flex items-center gap-2">
                 <div className="w-2.5 h-2.5 rounded-full bg-[#FF5F56]" /><div className="w-2.5 h-2.5 rounded-full bg-[#FFBD2E]" /><div className="w-2.5 h-2.5 rounded-full bg-[#27C93F]" />
-                <span className="ml-2 text-xs text-[#9AAAB8] font-mono">Comparison</span>
+                <span className="ml-2 text-xs text-[#9AAAB8] font-mono">Why Sentira</span>
               </div>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/comparison.png" alt="3 emotions vs 82 Sentira emotions" style={{ width: "100%", display: "block" }} />
+              <img src="/comparison.png" alt="3 sentiment states vs 82 Sentira deviation emotions" style={{ width: "100%", display: "block" }} />
               <div className="px-4 py-3 bg-white border-t border-black/[0.07]">
-                <p className="text-xs font-semibold text-[#0C0F1A] mb-0.5">Why Sentira</p>
-                <p className="text-xs text-[#9AAAB8] font-light">3 emotions vs 82 · The difference</p>
+                <p className="text-xs font-semibold text-[#0C0F1A] mb-0.5">The Sentira Difference</p>
+                <p className="text-xs text-[#9AAAB8] font-light">3 sentiment states vs 82 named emotions</p>
               </div>
             </div>
             <div className="rounded-2xl overflow-hidden border border-black/[0.07] shadow-md shadow-black/[0.04]">
@@ -366,10 +414,10 @@ export default function LandingPage() {
                 <span className="ml-2 text-xs text-[#9AAAB8] font-mono">Case Study</span>
               </div>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/casestudy.png" alt="Los Angeles April vs May 2026" style={{ width: "100%", display: "block" }} />
+              <img src="/casestudy.png" alt="Los Angeles deviation case study April vs May 2026" style={{ width: "100%", display: "block" }} />
               <div className="px-4 py-3 bg-white border-t border-black/[0.07]">
-                <p className="text-xs font-semibold text-[#0C0F1A] mb-0.5">Live Case Study</p>
-                <p className="text-xs text-[#9AAAB8] font-light">Los Angeles · April vs May 2026</p>
+                <p className="text-xs font-semibold text-[#0C0F1A] mb-0.5">Deviation Case Study</p>
+                <p className="text-xs text-[#9AAAB8] font-light">Los Angeles · April vs May 2026 baseline shift</p>
               </div>
             </div>
           </div>
@@ -379,8 +427,9 @@ export default function LandingPage() {
       {/* ── EMOTION SPECTRUM ── */}
       <section id="spectrum" className="py-16 px-6 border-b border-black/[0.07] bg-[#F4F0E8]">
         <div className="max-w-5xl mx-auto text-center">
-          <p className="text-[10px] uppercase tracking-[0.25em] text-[#9AAAB8] mb-1 font-semibold">The Sentira Spectrum</p>
-          <p className="text-xs text-[#9AAAB8] mb-8">82 emotions · 12 families · ROYGBIV color system · lighter shade = gentler · darker shade = more intense</p>
+          <p className="text-[10px] uppercase tracking-[0.25em] text-[#9AAAB8] mb-1 font-semibold">The Sentira Proprietary Spectrum</p>
+          <p className="text-xs text-[#9AAAB8] mb-2">82 named emotions · 12 families · ROYGBIV deviation color system</p>
+          <p className="text-xs text-[#9AAAB8] mb-8">Lighter shade = gentler expression · Darker shade = more intense expression · Each color family maps to a specific emotional valence</p>
           <div className="flex h-1.5 rounded-full overflow-hidden max-w-2xl mx-auto mb-8 gap-0.5">
             {["#E24B4A","#D85A30","#EF9F27","#BA7517","#639922","#1D9E75","#5DCAA5","#378ADD","#7F77DD","#D4537E"].map((c) => (
               <div key={c} className="flex-1 rounded-full" style={{ background: c }} />
@@ -413,16 +462,18 @@ export default function LandingPage() {
       <section id="how-it-works" className="py-24 px-6 bg-white border-b border-black/[0.07]">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-16">
-            <p className="text-[10px] uppercase tracking-[0.25em] text-[#0D916A] font-semibold mb-3">How Sentira Works</p>
+            <p className="text-[10px] uppercase tracking-[0.25em] text-[#0D916A] font-semibold mb-3">The Sentira Methodology</p>
             <h2 className="text-3xl font-bold mb-3 text-[#0C0F1A]">Five layers. One truth.</h2>
-            <p className="text-[#4E5A6E] max-w-xl mx-auto font-light">From direct human declaration to a live emotional atlas of the world.</p>
+            <p className="text-[#4E5A6E] max-w-xl mx-auto font-light">From open web signal to geographic deviation intelligence — in five proprietary steps.</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
             {steps.map((s) => (
               <div key={s.number} className="bg-[#F4F0E8] border border-black/[0.07] rounded-2xl p-6 flex flex-col gap-3 hover:shadow-md hover:border-black/15 transition">
                 <div className="flex items-center gap-2 mb-1">
                   <div className="w-2 h-2 rounded-full" style={{ background: s.color }} />
-                  <span className="text-[10px] uppercase tracking-widest text-[#9AAAB8] font-semibold">{s.number === "00" ? "Layer 0 · NEW" : `Layer ${s.number}`}</span>
+                  <span className="text-[10px] uppercase tracking-widest text-[#9AAAB8] font-semibold">
+                    {s.number === "00" ? "Layer 0 · NEW" : `Layer ${s.number}`}
+                  </span>
                 </div>
                 <span className="text-4xl font-black text-[#0C0F1A]/[0.08]">{s.number}</span>
                 <h3 className="text-base font-semibold text-[#0C0F1A]">{s.title}</h3>
@@ -433,13 +484,13 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── USE CASES ── */}
+      {/* ── SOLUTIONS ── */}
       <section id="use-cases" className="py-24 px-6 bg-[#F4F0E8] border-b border-black/[0.07]">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-16">
-            <p className="text-[10px] uppercase tracking-[0.25em] text-[#0D916A] font-semibold mb-3">Who It&apos;s For</p>
-            <h2 className="text-3xl font-bold mb-3 text-[#0C0F1A]">Built for those who need to understand humanity.</h2>
-            <p className="text-[#4E5A6E] max-w-xl mx-auto font-light">From breaking news to market intelligence — Sentira gives you the emotional signal nobody else has.</p>
+            <p className="text-[10px] uppercase tracking-[0.25em] text-[#0D916A] font-semibold mb-3">Intelligence Solutions</p>
+            <h2 className="text-3xl font-bold mb-3 text-[#0C0F1A]">Built for the intelligence teams that move first.</h2>
+            <p className="text-[#4E5A6E] max-w-xl mx-auto font-light">Financial analysts, news intelligence desks, institutional researchers, and campaign strategists — Sentira provides the deviation signal that no existing data feed carries.</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             {useCases.map((u) => (
@@ -461,22 +512,26 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── CTA ── */}
+      {/* ── ENTERPRISE CTA ── */}
       <section className="py-24 px-6 text-center bg-white">
         <div className="max-w-2xl mx-auto">
-          <p className="text-[10px] uppercase tracking-[0.25em] text-[#0D916A] font-semibold mb-4">Early Access</p>
+          <p className="text-[10px] uppercase tracking-[0.25em] text-[#0D916A] font-semibold mb-4">Enterprise Access</p>
           <h2 className="text-4xl font-extrabold mb-4 text-[#0C0F1A]">
-            See the world&apos;s mood,{" "}
-            <span className="text-[#0D916A] italic font-light">right now.</span>
+            Not what the world feels.<br />
+            <span className="text-[#0D916A] italic font-light">How differently it feels.</span>
           </h2>
-          <p className="text-[#4E5A6E] mb-10 font-light leading-relaxed">
-            Explore the interactive demo — city-level emotion aggregation, timeline playback, and topic filters, running live in your browser.
+          <p className="text-[#4E5A6E] mb-10 font-light leading-relaxed max-w-lg mx-auto">
+            Request a platform demonstration. See how deviation intelligence compares to your existing sentiment tools — and why the difference is the signal your stack is currently missing.
           </p>
-          <Link href="/demo" className="inline-block bg-[#0C0F1A] text-[#F4F0E8] font-bold px-10 py-4 rounded-full text-lg hover:bg-[#1a2240] transition shadow-xl">
-            Launch Demo
-          </Link>
+          <a
+            href="mailto:hello@sentira.net?subject=Enterprise Access Request — Sentira"
+            className="inline-block bg-[#0C0F1A] text-[#F4F0E8] font-bold px-10 py-4 rounded-full text-lg hover:bg-[#1a2240] transition shadow-xl"
+          >
+            Request a demonstration
+          </a>
           <p className="text-xs text-[#9AAAB8] mt-6">
-            Enterprise inquiries:{" "}
+            Enterprise pricing available · API access · Custom integration
+            <br />
             <a href="mailto:hello@sentira.net" className="text-[#0D916A] hover:underline">hello@sentira.net</a>
           </p>
         </div>
@@ -487,11 +542,12 @@ export default function LandingPage() {
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <div>
             <p className="text-[#F4F0E8] font-bold tracking-[0.35em] text-sm uppercase mb-1">Sentira</p>
-            <p className="text-white/30 text-xs">Signal · Emotion · Nuance · Trends · Insight · Real-time · Atlas</p>
+            <p className="text-white/50 text-xs mb-1">Deviation Intelligence Platform</p>
+            <p className="text-white/25 text-xs">Signal · Emotion · Nuance · Trends · Insight · Real-time · Atlas</p>
           </div>
           <p className="text-white/25 text-xs text-center sm:text-right">
             © {new Date().getFullYear()} Sentira — Andrew Wesley Blackman<br />
-            Simulated data demo · Data sourced ethically · No individual tracking
+            Anonymous signal collection · No personal data stored · No individual tracking
           </p>
         </div>
       </footer>
