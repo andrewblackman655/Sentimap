@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { useState } from "react";
 
 // ── 12 emotion families · 82 total emotions ─────────────────────────────────
 const emotionFamilies = [
@@ -30,18 +33,46 @@ const useCases = [
   { icon: "📣", accent: "#D4537E", title: "Brand Strategy", desc: "Know when your target market is in a receptive emotional state. Measure how your campaign lands relative to the emotional baseline — not just the noise floor.", quote: "We delayed the campaign 9 days based on Sentira's signal. The re-timed launch outperformed by 34%." },
 ];
 
+// ── City names for pulse check confirmation preview ───────────────────────────
+const cities = ["Los Angeles", "New York", "London", "Tokyo", "Chicago", "Sydney", "Toronto", "Berlin"];
+
 export default function LandingPage() {
+
+  // ── Pulse check state ──────────────────────────────────────────────────────
+  const [pulseFamily, setPulseFamily] = useState<typeof emotionFamilies[0] | null>(null);
+  const [pulseDone, setPulseDone] = useState(false);
+  const randomCity = cities[Math.floor(Math.random() * cities.length)];
+
+  function handlePulse(f: typeof emotionFamilies[0]) {
+    setPulseFamily(f);
+    setPulseDone(true);
+  }
+
+  function resetPulse() {
+    setPulseFamily(null);
+    setPulseDone(false);
+  }
+
+  // ── Waitlist state ─────────────────────────────────────────────────────────
+  const [waitlistEmail, setWaitlistEmail] = useState("");
+  const [waitlistDone, setWaitlistDone] = useState(false);
+
+  function handleWaitlist(e: React.FormEvent) {
+    e.preventDefault();
+    if (waitlistEmail) setWaitlistDone(true);
+  }
+
   return (
     <div className="min-h-screen bg-[#F4F0E8] text-[#0C0F1A] font-sans">
 
-      {/* NAV */}
+      {/* ── NAV ── */}
       <nav className="fixed top-0 left-0 right-0 z-50 border-b border-black/[0.07] bg-white/92 backdrop-blur-md">
         <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
           <span className="text-base font-bold tracking-[0.35em] text-[#0C0F1A] uppercase">Sentira</span>
           <div className="flex items-center gap-6 text-sm text-[#4E5A6E]">
+            <a href="#pulse" className="hover:text-[#0C0F1A] transition">Check In</a>
             <a href="#product" className="hover:text-[#0C0F1A] transition">Product</a>
             <a href="#how-it-works" className="hover:text-[#0C0F1A] transition">How It Works</a>
-            <a href="#spectrum" className="hover:text-[#0C0F1A] transition">Spectrum</a>
             <a href="#use-cases" className="hover:text-[#0C0F1A] transition">Use Cases</a>
             <Link href="/demo" className="bg-[#0C0F1A] text-[#F4F0E8] font-semibold px-4 py-1.5 rounded-full text-sm hover:bg-[#1a2240] transition">
               Try Demo
@@ -50,8 +81,8 @@ export default function LandingPage() {
         </div>
       </nav>
 
-      {/* HERO */}
-      <section className="pt-36 pb-24 px-6 text-center relative overflow-hidden">
+      {/* ── HERO ── */}
+      <section className="pt-36 pb-20 px-6 text-center relative overflow-hidden">
         <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[700px] h-[420px] bg-[#1D9E75]/[0.07] rounded-full blur-3xl pointer-events-none" />
         <div className="relative max-w-3xl mx-auto">
           <div className="inline-flex items-center gap-2 bg-[#1D9E75]/10 border border-[#1D9E75]/25 text-[#0D916A] text-xs px-4 py-1.5 rounded-full mb-8 font-semibold tracking-[0.15em] uppercase">
@@ -67,9 +98,9 @@ export default function LandingPage() {
             Sentira maps collective human emotion across 247 cities in real time — 82 nuanced emotions, updated every 15 minutes, normalized against global topic baselines so every comparison is valid.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-14">
-            <Link href="/demo" className="bg-[#0C0F1A] text-[#F4F0E8] font-bold px-8 py-3.5 rounded-full text-base hover:bg-[#1a2240] transition shadow-lg">
-              Try the Demo
-            </Link>
+            <a href="#pulse" className="bg-[#0C0F1A] text-[#F4F0E8] font-bold px-8 py-3.5 rounded-full text-base hover:bg-[#1a2240] transition shadow-lg">
+              How are you feeling?
+            </a>
             <a href="#product" className="border border-black/20 text-[#4E5A6E] px-8 py-3.5 rounded-full text-base hover:bg-black/5 transition">
               See the Product
             </a>
@@ -86,8 +117,171 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* PRODUCT SCREENSHOTS */}
-      <section id="product" className="py-20 px-6 bg-white border-y border-black/[0.07]">
+      {/* ── PULSE CHECK ── */}
+      <section id="pulse" className="py-20 px-6 bg-white border-y border-black/[0.07]">
+        <div className="max-w-3xl mx-auto text-center">
+
+          {!pulseDone ? (
+            <>
+              <div className="inline-flex items-center gap-2 bg-[#1D9E75]/10 border border-[#1D9E75]/25 text-[#0D916A] text-xs px-4 py-1.5 rounded-full mb-6 font-semibold tracking-[0.15em] uppercase">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#0D916A] animate-pulse" />
+                Anonymous · No account required
+              </div>
+              <h2 className="text-3xl sm:text-4xl font-extrabold mb-3 text-[#0C0F1A] tracking-tight">
+                How are you feeling<br />
+                <span className="text-[#0D916A] font-light italic">right now?</span>
+              </h2>
+              <p className="text-[#9AAAB8] mb-10 font-light text-sm">
+                Select the emotion family that best describes how you feel. Your signal joins the live Sentira atlas — anonymous and immediate.
+              </p>
+              <div className="grid grid-cols-3 sm:grid-cols-4 gap-3 max-w-2xl mx-auto">
+                {emotionFamilies.map((f) => (
+                  <button
+                    key={f.family}
+                    onClick={() => handlePulse(f)}
+                    className="flex flex-col items-center gap-2 p-4 rounded-2xl border transition-all hover:scale-105 hover:shadow-md active:scale-95"
+                    style={{
+                      background: f.light,
+                      borderColor: f.color + "30",
+                    }}
+                  >
+                    <div
+                      className="w-9 h-9 rounded-full shadow-sm"
+                      style={{ background: f.color }}
+                    />
+                    <span className="text-xs font-semibold" style={{ color: f.dark }}>
+                      {f.family}
+                    </span>
+                  </button>
+                ))}
+              </div>
+              <p className="text-[10px] uppercase tracking-widest text-[#C8C4BA] mt-8">
+                Full emotion check-in launching soon — 82 emotions · topic tagging · personal history
+              </p>
+            </>
+          ) : (
+            <>
+              {/* Confirmation */}
+              <div
+                className="w-14 h-14 rounded-full mx-auto mb-5 flex items-center justify-center shadow-md"
+                style={{ background: pulseFamily?.light }}
+              >
+                <div
+                  className="w-8 h-8 rounded-full"
+                  style={{ background: pulseFamily?.color }}
+                />
+              </div>
+              <h2 className="text-2xl font-bold mb-2 text-[#0C0F1A]">Signal received.</h2>
+              <p className="text-[#9AAAB8] font-light text-sm mb-8">
+                Your <strong style={{ color: pulseFamily?.color }}>{pulseFamily?.family}</strong> signal has been added to the live Sentira atlas.
+              </p>
+
+              {/* Feed preview */}
+              <div className="bg-[#F4F0E8] border border-black/[0.07] rounded-2xl p-5 text-left max-w-xl mx-auto mb-6">
+                <p className="text-[10px] uppercase tracking-widest text-[#9AAAB8] mb-3 font-semibold">Your signal in the live feed</p>
+                <div className="flex items-start gap-3">
+                  <div
+                    className="w-5 h-5 rounded-full flex-shrink-0 mt-0.5 border-2"
+                    style={{ background: pulseFamily?.light, borderColor: pulseFamily?.color + "50" }}
+                  />
+                  <div className="flex-1">
+                    <div className="flex flex-wrap items-center gap-2 mb-1.5">
+                      <span className="text-sm font-semibold text-[#0C0F1A]">{randomCity}</span>
+                      <span
+                        className="text-xs px-2.5 py-0.5 rounded-full font-semibold"
+                        style={{ background: pulseFamily?.light, color: pulseFamily?.dark }}
+                      >
+                        {pulseFamily?.family}
+                      </span>
+                      <span className="text-xs px-2.5 py-0.5 rounded-full bg-[#E8F5F1] text-[#0D916A] font-semibold">
+                        direct signal
+                      </span>
+                      <span className="text-xs text-[#9AAAB8]">just now</span>
+                    </div>
+                    <p className="text-xs text-[#9AAAB8] font-light">
+                      Anonymous · weighted at 15% of city aggregate · anomaly-checked
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-3 justify-center">
+                <button
+                  onClick={resetPulse}
+                  className="border border-black/15 text-[#4E5A6E] px-6 py-2.5 rounded-full text-sm hover:bg-black/5 transition font-medium"
+                >
+                  Submit another signal
+                </button>
+                <a
+                  href="#waitlist"
+                  className="bg-[#0C0F1A] text-[#F4F0E8] px-6 py-2.5 rounded-full text-sm hover:bg-[#1a2240] transition font-semibold"
+                >
+                  Get notified when full check-in launches →
+                </a>
+              </div>
+            </>
+          )}
+        </div>
+      </section>
+
+      {/* ── WAITLIST BANNER ── */}
+      <section id="waitlist" className="py-14 px-6 bg-[#F4F0E8] border-b border-black/[0.07]">
+        <div className="max-w-4xl mx-auto">
+          <div className="bg-white border border-black/[0.07] rounded-2xl p-8 flex flex-col sm:flex-row items-center gap-8 shadow-sm">
+            <div className="flex-1 text-center sm:text-left">
+              <div className="inline-flex items-center gap-2 bg-[#1D9E75]/10 border border-[#1D9E75]/25 text-[#0D916A] text-[10px] px-3 py-1 rounded-full mb-3 font-semibold tracking-[0.15em] uppercase">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#0D916A] animate-pulse" />
+                Coming Soon
+              </div>
+              <h3 className="text-xl font-bold text-[#0C0F1A] mb-2">
+                Want the full emotion check-in?
+              </h3>
+              <p className="text-sm text-[#4E5A6E] font-light leading-relaxed max-w-sm">
+                Be notified when Sentira&apos;s direct emotion check-in launches — with 82-emotion depth, personal history, city comparisons, and your emotional fingerprint over time.
+              </p>
+            </div>
+
+            <div className="w-full sm:w-auto flex-shrink-0">
+              {!waitlistDone ? (
+                <form onSubmit={handleWaitlist} className="flex flex-col sm:flex-row gap-3">
+                  <input
+                    type="email"
+                    required
+                    value={waitlistEmail}
+                    onChange={(e) => setWaitlistEmail(e.target.value)}
+                    placeholder="your@email.com"
+                    className="flex-1 sm:w-56 bg-[#F4F0E8] border border-black/[0.12] rounded-full px-5 py-3 text-sm text-[#0C0F1A] placeholder:text-[#9AAAB8] outline-none focus:border-[#0D916A] transition font-sans"
+                  />
+                  <button
+                    type="submit"
+                    className="bg-[#0C0F1A] text-[#F4F0E8] font-semibold px-6 py-3 rounded-full text-sm hover:bg-[#1a2240] transition whitespace-nowrap"
+                  >
+                    Notify me
+                  </button>
+                </form>
+              ) : (
+                <div className="flex items-center gap-3 bg-[#E8F5F1] border border-[#1D9E75]/25 rounded-2xl px-6 py-4">
+                  <div className="w-8 h-8 rounded-full bg-[#1D9E75] flex items-center justify-center flex-shrink-0">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                      <path d="M2 7l3.5 3.5L12 3.5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-[#0C0F1A]">You&apos;re on the list.</p>
+                    <p className="text-xs text-[#4E5A6E] font-light">We&apos;ll notify you at launch.</p>
+                  </div>
+                </div>
+              )}
+              <p className="text-[10px] text-[#C8C4BA] mt-2 text-center sm:text-left">
+                No spam. Unsubscribe anytime.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── PRODUCT SCREENSHOTS ── */}
+      <section id="product" className="py-20 px-6 bg-white border-b border-black/[0.07]">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <p className="text-[10px] uppercase tracking-[0.25em] text-[#0D916A] font-semibold mb-3">Product Preview</p>
@@ -104,32 +298,22 @@ export default function LandingPage() {
               <span className="ml-3 text-xs text-[#9AAAB8] font-mono">app.sentira.net/dashboard</span>
             </div>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/dashboard.png"
-              alt="Sentira main dashboard — live global emotion map with real-time city data"
-              style={{ width: "100%", display: "block" }}
-            />
+            <img src="/dashboard.png" alt="Sentira main dashboard" style={{ width: "100%", display: "block" }} />
             <div className="px-5 py-3 bg-white border-t border-black/[0.07] flex items-center justify-between">
               <p className="text-xs font-semibold text-[#0C0F1A]">Main Dashboard</p>
               <p className="text-xs text-[#9AAAB8] font-light">Live map · Global Index · Signal feed · Mobile views</p>
             </div>
           </div>
 
-          {/* Images 2 & 3 — worldmap + analytics — side by side */}
+          {/* Images 2 & 3 */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
             <div className="rounded-2xl overflow-hidden border border-black/[0.07] shadow-md shadow-black/[0.04]">
               <div className="bg-[#F4F0E8] border-b border-black/[0.07] px-4 py-3 flex items-center gap-2">
-                <div className="w-2.5 h-2.5 rounded-full bg-[#FF5F56]" />
-                <div className="w-2.5 h-2.5 rounded-full bg-[#FFBD2E]" />
-                <div className="w-2.5 h-2.5 rounded-full bg-[#27C93F]" />
+                <div className="w-2.5 h-2.5 rounded-full bg-[#FF5F56]" /><div className="w-2.5 h-2.5 rounded-full bg-[#FFBD2E]" /><div className="w-2.5 h-2.5 rounded-full bg-[#27C93F]" />
                 <span className="ml-2 text-xs text-[#9AAAB8] font-mono">World Map</span>
               </div>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/worldmap.png"
-                alt="Sentira cartographic world map with vivid emotion-colored city dots"
-                style={{ width: "100%", display: "block" }}
-              />
+              <img src="/worldmap.png" alt="Sentira cartographic world map" style={{ width: "100%", display: "block" }} />
               <div className="px-4 py-3 bg-white border-t border-black/[0.07]">
                 <p className="text-xs font-semibold text-[#0C0F1A] mb-0.5">Cartographic Emotion Map</p>
                 <p className="text-xs text-[#9AAAB8] font-light">Parchment aesthetic · Live city dots · ROYGBIV emotion colors</p>
@@ -137,17 +321,11 @@ export default function LandingPage() {
             </div>
             <div className="rounded-2xl overflow-hidden border border-black/[0.07] shadow-md shadow-black/[0.04]">
               <div className="bg-[#F4F0E8] border-b border-black/[0.07] px-4 py-3 flex items-center gap-2">
-                <div className="w-2.5 h-2.5 rounded-full bg-[#FF5F56]" />
-                <div className="w-2.5 h-2.5 rounded-full bg-[#FFBD2E]" />
-                <div className="w-2.5 h-2.5 rounded-full bg-[#27C93F]" />
+                <div className="w-2.5 h-2.5 rounded-full bg-[#FF5F56]" /><div className="w-2.5 h-2.5 rounded-full bg-[#FFBD2E]" /><div className="w-2.5 h-2.5 rounded-full bg-[#27C93F]" />
                 <span className="ml-2 text-xs text-[#9AAAB8] font-mono">Analytics</span>
               </div>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/analytics.png"
-                alt="Sentira emotion analytics showing deviation scoring and city comparison"
-                style={{ width: "100%", display: "block" }}
-              />
+              <img src="/analytics.png" alt="Sentira emotion analytics" style={{ width: "100%", display: "block" }} />
               <div className="px-4 py-3 bg-white border-t border-black/[0.07]">
                 <p className="text-xs font-semibold text-[#0C0F1A] mb-0.5">Emotion Analytics</p>
                 <p className="text-xs text-[#9AAAB8] font-light">Deviation scoring · City comparison · ROYGBIV spectrum</p>
@@ -155,21 +333,15 @@ export default function LandingPage() {
             </div>
           </div>
 
-          {/* Images 4, 5, 6 — mobile + comparison + casestudy — three columns */}
+          {/* Images 4, 5, 6 */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
             <div className="rounded-2xl overflow-hidden border border-black/[0.07] shadow-md shadow-black/[0.04]">
               <div className="bg-[#F4F0E8] border-b border-black/[0.07] px-4 py-3 flex items-center gap-2">
-                <div className="w-2.5 h-2.5 rounded-full bg-[#FF5F56]" />
-                <div className="w-2.5 h-2.5 rounded-full bg-[#FFBD2E]" />
-                <div className="w-2.5 h-2.5 rounded-full bg-[#27C93F]" />
+                <div className="w-2.5 h-2.5 rounded-full bg-[#FF5F56]" /><div className="w-2.5 h-2.5 rounded-full bg-[#FFBD2E]" /><div className="w-2.5 h-2.5 rounded-full bg-[#27C93F]" />
                 <span className="ml-2 text-xs text-[#9AAAB8] font-mono">Mobile</span>
               </div>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/mobile.png"
-                alt="Sentira mobile app on iPhone"
-                style={{ width: "100%", display: "block" }}
-              />
+              <img src="/mobile.png" alt="Sentira mobile app on iPhone" style={{ width: "100%", display: "block" }} />
               <div className="px-4 py-3 bg-white border-t border-black/[0.07]">
                 <p className="text-xs font-semibold text-[#0C0F1A] mb-0.5">Mobile App</p>
                 <p className="text-xs text-[#9AAAB8] font-light">iOS · Emotion map · Live feed</p>
@@ -177,17 +349,11 @@ export default function LandingPage() {
             </div>
             <div className="rounded-2xl overflow-hidden border border-black/[0.07] shadow-md shadow-black/[0.04]">
               <div className="bg-[#F4F0E8] border-b border-black/[0.07] px-4 py-3 flex items-center gap-2">
-                <div className="w-2.5 h-2.5 rounded-full bg-[#FF5F56]" />
-                <div className="w-2.5 h-2.5 rounded-full bg-[#FFBD2E]" />
-                <div className="w-2.5 h-2.5 rounded-full bg-[#27C93F]" />
+                <div className="w-2.5 h-2.5 rounded-full bg-[#FF5F56]" /><div className="w-2.5 h-2.5 rounded-full bg-[#FFBD2E]" /><div className="w-2.5 h-2.5 rounded-full bg-[#27C93F]" />
                 <span className="ml-2 text-xs text-[#9AAAB8] font-mono">Comparison</span>
               </div>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/comparison.png"
-                alt="3 basic emotions vs 82 Sentira emotions"
-                style={{ width: "100%", display: "block" }}
-              />
+              <img src="/comparison.png" alt="3 emotions vs 82 Sentira emotions" style={{ width: "100%", display: "block" }} />
               <div className="px-4 py-3 bg-white border-t border-black/[0.07]">
                 <p className="text-xs font-semibold text-[#0C0F1A] mb-0.5">Why Sentira</p>
                 <p className="text-xs text-[#9AAAB8] font-light">3 emotions vs 82 · The difference</p>
@@ -195,17 +361,11 @@ export default function LandingPage() {
             </div>
             <div className="rounded-2xl overflow-hidden border border-black/[0.07] shadow-md shadow-black/[0.04]">
               <div className="bg-[#F4F0E8] border-b border-black/[0.07] px-4 py-3 flex items-center gap-2">
-                <div className="w-2.5 h-2.5 rounded-full bg-[#FF5F56]" />
-                <div className="w-2.5 h-2.5 rounded-full bg-[#FFBD2E]" />
-                <div className="w-2.5 h-2.5 rounded-full bg-[#27C93F]" />
+                <div className="w-2.5 h-2.5 rounded-full bg-[#FF5F56]" /><div className="w-2.5 h-2.5 rounded-full bg-[#FFBD2E]" /><div className="w-2.5 h-2.5 rounded-full bg-[#27C93F]" />
                 <span className="ml-2 text-xs text-[#9AAAB8] font-mono">Case Study</span>
               </div>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/casestudy.png"
-                alt="Los Angeles April vs May 2026 emotional shift"
-                style={{ width: "100%", display: "block" }}
-              />
+              <img src="/casestudy.png" alt="Los Angeles April vs May 2026" style={{ width: "100%", display: "block" }} />
               <div className="px-4 py-3 bg-white border-t border-black/[0.07]">
                 <p className="text-xs font-semibold text-[#0C0F1A] mb-0.5">Live Case Study</p>
                 <p className="text-xs text-[#9AAAB8] font-light">Los Angeles · April vs May 2026</p>
@@ -215,7 +375,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* EMOTION SPECTRUM */}
+      {/* ── EMOTION SPECTRUM ── */}
       <section id="spectrum" className="py-16 px-6 border-b border-black/[0.07] bg-[#F4F0E8]">
         <div className="max-w-5xl mx-auto text-center">
           <p className="text-[10px] uppercase tracking-[0.25em] text-[#9AAAB8] mb-1 font-semibold">The Sentira Spectrum</p>
@@ -248,7 +408,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* HOW IT WORKS */}
+      {/* ── HOW IT WORKS ── */}
       <section id="how-it-works" className="py-24 px-6 bg-white border-b border-black/[0.07]">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-16">
@@ -272,7 +432,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* USE CASES */}
+      {/* ── USE CASES ── */}
       <section id="use-cases" className="py-24 px-6 bg-[#F4F0E8] border-b border-black/[0.07]">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-16">
@@ -300,7 +460,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* CTA */}
+      {/* ── CTA ── */}
       <section className="py-24 px-6 text-center bg-white">
         <div className="max-w-2xl mx-auto">
           <p className="text-[10px] uppercase tracking-[0.25em] text-[#0D916A] font-semibold mb-4">Early Access</p>
@@ -321,7 +481,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* FOOTER */}
+      {/* ── FOOTER ── */}
       <footer className="border-t border-black/[0.07] py-10 px-6 bg-[#0C0F1A]">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <div>
@@ -338,4 +498,3 @@ export default function LandingPage() {
     </div>
   );
 }
-
