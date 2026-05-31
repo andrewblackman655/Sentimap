@@ -111,8 +111,8 @@ export default function LandingPage() {
       <nav className="fixed top-0 left-0 right-0 z-50 border-b border-black/[0.07] bg-white/92 backdrop-blur-md">
         <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
           <div>
-            <span className="text-base font-bold tracking-[0.35em] text-[#0C0F1A] uppercase">Sentira</span>
-            <span className="ml-3 text-[10px] text-[#9AAAB8] uppercase tracking-widest hidden sm:inline">Deviation Intelligence Platform · Privacy-First</span>
+            <span className="text-base font-bold tracking-[0.35em] text-[#0C0F1A] uppercase">Sentira™</span>
+            <span className="ml-3 text-[10px] text-[#9AAAB8] uppercase tracking-widest hidden sm:inline">Sentira™ · Deviation Intelligence Platform · Privacy-First</span>
           </div>
           <div className="flex items-center gap-6 text-sm text-[#4E5A6E]">
             <a href="#pulse" className="hover:text-[#0C0F1A] transition">Check In</a>
@@ -134,7 +134,7 @@ export default function LandingPage() {
           {/* Platform badge */}
           <div className="inline-flex items-center gap-2 bg-[#1D9E75]/10 border border-[#1D9E75]/25 text-[#0D916A] text-xs px-4 py-1.5 rounded-full mb-8 font-semibold tracking-[0.15em] uppercase">
             <span className="w-1.5 h-1.5 rounded-full bg-[#0D916A] animate-pulse" />
-            Deviation Intelligence Platform · Beta Access Open
+            Sentira™ Deviation Intelligence Platform · Beta Access Open
           </div>
 
           {/* Headline */}
@@ -151,7 +151,7 @@ export default function LandingPage() {
 
           {/* Platform description */}
           <p className="text-base text-[#9AAAB8] leading-relaxed max-w-2xl mx-auto mb-10 font-light">
-            Sentira is a real-time deviation intelligence platform. We map not what cities feel — but how differently they feel compared to what the world expects. Powered by the open web. Organized by a proprietary 82-emotion taxonomy. Updated every 15 minutes.
+            Sentira™ is a real-time deviation intelligence platform. We map not what cities feel — but how differently they feel compared to what the world expects. Powered by the open web. Organized by a proprietary 82-emotion taxonomy. Updated every 15 minutes.
           </p>
 
           {/* CTAs */}
@@ -203,7 +203,7 @@ export default function LandingPage() {
                 <span className="text-[#0D916A] font-light italic">right now?</span>
               </h2>
               <p className="text-[#9AAAB8] mb-6 font-light text-sm">
-                Select the emotion family that best describes how you feel. Your signal joins the live Sentira deviation atlas — anonymous and immediate.
+                Select the emotion family that best describes how you feel. Your signal joins the live Sentira™ deviation atlas — anonymous and immediate.
               </p>
               <p className="text-[10px] text-[#C8C4BA] mb-8 font-light">
                 Your IP is used only to identify your city and is immediately discarded. No personal data is stored. No account required.
@@ -235,7 +235,7 @@ export default function LandingPage() {
               </div>
               <h2 className="text-2xl font-bold mb-2 text-[#0C0F1A]">Signal received.</h2>
               <p className="text-[#9AAAB8] font-light text-sm mb-8">
-                Your <strong style={{ color: pulseFamily?.color }}>{pulseFamily?.family}</strong> signal has been added to the live Sentira deviation atlas.
+                Your <strong style={{ color: pulseFamily?.color }}>{pulseFamily?.family}</strong> signal has been added to the live Sentira™ deviation atlas.
               </p>
               <div className="bg-[#F4F0E8] border border-black/[0.07] rounded-2xl p-5 text-left max-w-xl mx-auto mb-6">
                 <p className="text-[10px] uppercase tracking-widest text-[#9AAAB8] mb-3 font-semibold">Your signal in the deviation feed</p>
@@ -252,7 +252,7 @@ export default function LandingPage() {
                         {pulseFamily?.family}
                       </span>
                       <span className="text-xs px-2.5 py-0.5 rounded-full bg-[#E8F5F1] text-[#0D916A] font-semibold">
-                        declared · Layer 0
+                        declared · Sentira™ Layer 0
                       </span>
                       <span className="text-xs text-[#9AAAB8]">just now</span>
                     </div>
@@ -290,7 +290,7 @@ export default function LandingPage() {
                 <span className="w-1.5 h-1.5 rounded-full bg-[#0D916A] animate-pulse" />
                 Coming Soon
               </div>
-              <h3 className="text-xl font-bold text-[#0C0F1A] mb-2">Want the full emotion check-in?</h3>
+              <h3 className="text-xl font-bold text-[#0C0F1A] mb-2">Want the full Sentira™ emotion check-in?</h3>
               <p className="text-sm text-[#4E5A6E] font-light leading-relaxed max-w-sm">
                 Be notified when the full check-in launches. Anonymous signals feed the live atlas. Optional account creation unlocks your personal emotion history — always private, always yours.
               </p>
@@ -334,7 +334,7 @@ export default function LandingPage() {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <p className="text-[10px] uppercase tracking-[0.25em] text-[#0D916A] font-semibold mb-3">Intelligence Platform Preview</p>
-            <h2 className="text-3xl font-bold mb-3 text-[#0C0F1A]">Geographic deviation intelligence.<br />In color, not text.</h2>
+            <h2 className="text-3xl font-bold mb-3 text-[#0C0F1A]">Sentira™ Geographic Deviation Intelligence.<br />In color, not text.</h2>
             <p className="text-[#4E5A6E] max-w-xl mx-auto font-light">Real-time deviation intelligence across global markets — color-coded by emotion, normalized against city baselines, updated every 15 minutes.</p>
           </div>
 
@@ -347,7 +347,7 @@ export default function LandingPage() {
               <span className="ml-3 text-xs text-[#9AAAB8] font-mono">app.sentira.net/dashboard · live deviation intelligence</span>
             </div>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/dashboard.png" alt="Sentira deviation intelligence dashboard — live global emotion map with city-level deviation scores" style={{ width: "100%", display: "block" }} />
+            <img src="/dashboard.png" alt="Sentira™ deviation intelligence dashboard — live global emotion map with city-level deviation scores" style={{ width: "100%", display: "block" }} />
             <div className="px-5 py-3 bg-white border-t border-black/[0.07] flex items-center justify-between">
               <p className="text-xs font-semibold text-[#0C0F1A]">Live Deviation Dashboard</p>
               <p className="text-xs text-[#9AAAB8] font-light">Global deviation atlas · City signals · Baseline comparisons · Mobile views</p>
@@ -462,8 +462,8 @@ export default function LandingPage() {
       <section id="how-it-works" className="py-24 px-6 bg-white border-b border-black/[0.07]">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-16">
-            <p className="text-[10px] uppercase tracking-[0.25em] text-[#0D916A] font-semibold mb-3">The Sentira Methodology</p>
-            <h2 className="text-3xl font-bold mb-3 text-[#0C0F1A]">Five layers. One truth.</h2>
+            <p className="text-[10px] uppercase tracking-[0.25em] text-[#0D916A] font-semibold mb-3">The Sentira™ Methodology</p>
+            <h2 className="text-3xl font-bold mb-3 text-[#0C0F1A]">Five layers. One truth. — Sentira™</h2>
             <p className="text-[#4E5A6E] max-w-xl mx-auto font-light">From open web signal to geographic deviation intelligence — in five proprietary steps.</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
@@ -489,7 +489,7 @@ export default function LandingPage() {
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-16">
             <p className="text-[10px] uppercase tracking-[0.25em] text-[#0D916A] font-semibold mb-3">Intelligence Solutions</p>
-            <h2 className="text-3xl font-bold mb-3 text-[#0C0F1A]">Built for the intelligence teams that move first.</h2>
+            <h2 className="text-3xl font-bold mb-3 text-[#0C0F1A]">Built for the intelligence teams that move first. Only on Sentira™.</h2>
             <p className="text-[#4E5A6E] max-w-xl mx-auto font-light">Financial analysts, news intelligence desks, institutional researchers, and campaign strategists — Sentira provides the deviation signal that no existing data feed carries.</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
@@ -519,6 +519,7 @@ export default function LandingPage() {
           <h2 className="text-4xl font-extrabold mb-4 text-[#0C0F1A]">
             Not what the world feels.<br />
             <span className="text-[#0D916A] italic font-light">How differently it feels.</span>
+          <p className="text-xs text-[#9AAAB8] mt-2">Sentira™ — Deviation Intelligence Platform</p>
           </h2>
           <p className="text-[#4E5A6E] mb-10 font-light leading-relaxed max-w-lg mx-auto">
             Request a platform demonstration. See how deviation intelligence compares to your existing sentiment tools — and why the difference is the signal your stack is currently missing.
@@ -541,12 +542,12 @@ export default function LandingPage() {
       <footer className="border-t border-black/[0.07] py-10 px-6 bg-[#0C0F1A]">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <div>
-            <p className="text-[#F4F0E8] font-bold tracking-[0.35em] text-sm uppercase mb-1">Sentira</p>
+            <p className="text-[#F4F0E8] font-bold tracking-[0.35em] text-sm uppercase mb-1">Sentira™</p>
             <p className="text-white/50 text-xs mb-1">Deviation Intelligence Platform</p>
-            <p className="text-white/25 text-xs">Signal · Emotion · Nuance · Trends · Insight · Real-time · Atlas</p>
+            <p className="text-white/25 text-xs">Signal · Emotion · Nuance · Trends · Insight · Real-time · Atlas · ™</p>
           </div>
           <p className="text-white/25 text-xs text-center sm:text-right">
-            © {new Date().getFullYear()} Sentira — Andrew Wesley Blackman<br />
+            © {new Date().getFullYear()} Sentira™ — Andrew Wesley Blackman<br />
             Anonymous signal collection · No personal data stored · No individual tracking
           </p>
         </div>
