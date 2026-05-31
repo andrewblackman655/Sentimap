@@ -134,7 +134,7 @@ export default function LandingPage() {
           {/* Platform badge */}
           <div className="inline-flex items-center gap-2 bg-[#1D9E75]/10 border border-[#1D9E75]/25 text-[#0D916A] text-xs px-4 py-1.5 rounded-full mb-8 font-semibold tracking-[0.15em] uppercase">
             <span className="w-1.5 h-1.5 rounded-full bg-[#0D916A] animate-pulse" />
-            Sentira™ Deviation Intelligence Platform · Beta Access Open
+            Sentira™ Emotion Intelligence Platform · Beta Access Open
           </div>
 
           {/* Headline */}
