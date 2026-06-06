@@ -1,558 +1,581 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
 
-// ── 12 emotion families · 82 total emotions ─────────────────────────────────
+// ─── EMOTION DATA ───────────────────────────────────────────────────────────
+
 const emotionFamilies = [
-  { family: "Joy", color: "#EF9F27", light: "#FAEEDA", dark: "#633806", emotions: ["Bliss", "Contentment", "Cheerfulness", "Delight", "Joy", "Elation", "Euphoria"] },
-  { family: "Love", color: "#D4537E", light: "#FBEAF0", dark: "#4B1528", emotions: ["Fondness", "Warmth", "Tenderness", "Affection", "Compassion", "Love", "Devotion"] },
-  { family: "Excitement", color: "#639922", light: "#EAF3DE", dark: "#173404", emotions: ["Curiosity", "Interest", "Wonder", "Enthusiasm", "Excitement", "Awe", "Exhilaration"] },
-  { family: "Calm", color: "#1D9E75", light: "#E1F5EE", dark: "#04342C", emotions: ["Openness", "Ease", "Hope", "Serenity", "Calm", "Tranquility", "Peace"] },
-  { family: "Sadness", color: "#378ADD", light: "#E6F1FB", dark: "#042C53", emotions: ["Wistfulness", "Longing", "Nostalgia", "Sadness", "Melancholy", "Grief", "Despair"] },
-  { family: "Anxiety", color: "#7F77DD", light: "#EEEDFE", dark: "#26215C", emotions: ["Unease", "Nervousness", "Worry", "Anxiety", "Apprehension", "Fear", "Dread"] },
-  { family: "Anger", color: "#D85A30", light: "#FAECE7", dark: "#4A1B0C", emotions: ["Irritation", "Annoyance", "Frustration", "Anger", "Indignation", "Rage", "Fury"] },
-  { family: "Disgust", color: "#E24B4A", light: "#FCEBEB", dark: "#501313", emotions: ["Distaste", "Displeasure", "Aversion", "Disgust", "Contempt", "Loathing"] },
-  { family: "Shame", color: "#534AB7", light: "#EEEDFE", dark: "#26215C", emotions: ["Awkwardness", "Embarrassment", "Regret", "Guilt", "Shame", "Humiliation"] },
-  { family: "Pride", color: "#BA7517", light: "#FAEEDA", dark: "#412402", emotions: ["Satisfaction", "Confidence", "Dignity", "Pride", "Achievement", "Triumph"] },
-  { family: "Confusion", color: "#888780", light: "#F1EFE8", dark: "#2C2C2A", emotions: ["Uncertainty", "Doubt", "Perplexity", "Confusion", "Bewilderment", "Disorientation"] },
-  { family: "Apathy", color: "#5F5E5A", light: "#F1EFE8", dark: "#2C2C2A", emotions: ["Detachment", "Disinterest", "Boredom", "Numbness", "Apathy", "Emptiness"] },
+  {
+    family: "Joy", color: "#EF9F27", light: "#FDF3E0",
+    emotions: ["Happiness","Delight","Elation","Euphoria","Contentment","Amusement","Enthusiasm","Bliss","Serenity","Gratitude","Optimism"],
+  },
+  {
+    family: "Love", color: "#D4537E", light: "#FAEDF3",
+    emotions: ["Affection","Tenderness","Compassion","Adoration","Warmth","Longing","Devotion","Infatuation","Empathy","Sentimentality"],
+  },
+  {
+    family: "Excitement", color: "#639922", light: "#EAF3DE",
+    emotions: ["Anticipation","Eagerness","Thrill","Exhilaration","Curiosity","Wonder","Fascination","Inspiration","Zeal"],
+  },
+  {
+    family: "Calm", color: "#1D9E75", light: "#E1F5EE",
+    emotions: ["Tranquility","Peace","Relaxation","Equanimity","Mindfulness","Stillness","Comfort","Ease","Acceptance"],
+  },
+  {
+    family: "Sadness", color: "#378ADD", light: "#E6F1FB",
+    emotions: ["Grief","Sorrow","Melancholy","Despair","Loneliness","Regret","Disappointment","Heartache","Nostalgia","Hopelessness"],
+  },
+  {
+    family: "Anxiety", color: "#7F77DD", light: "#EEEDFE",
+    emotions: ["Worry","Nervousness","Dread","Apprehension","Unease","Panic","Tension","Restlessness","Hypervigilance"],
+  },
+  {
+    family: "Anger", color: "#D85A30", light: "#FAECE7",
+    emotions: ["Frustration","Irritation","Rage","Resentment","Contempt","Indignation","Hostility","Bitterness","Exasperation"],
+  },
+  {
+    family: "Disgust", color: "#E24B4A", light: "#FCEBEB",
+    emotions: ["Revulsion","Distaste","Repugnance","Aversion","Loathing","Discomfort"],
+  },
+  {
+    family: "Shame", color: "#534AB7", light: "#EEEDFE",
+    emotions: ["Embarrassment","Guilt","Humiliation","Remorse","Regret","Self-reproach","Mortification"],
+  },
+  {
+    family: "Pride", color: "#BA7517", light: "#FAEEDA",
+    emotions: ["Confidence","Achievement","Dignity","Self-respect","Honor","Triumph","Fulfillment"],
+  },
+  {
+    family: "Confusion", color: "#888780", light: "#F1EFE8",
+    emotions: ["Bewilderment","Uncertainty","Disorientation","Ambivalence","Doubt","Perplexity","Indecision"],
+  },
+  {
+    family: "Apathy", color: "#5F5E5A", light: "#F1EFE8",
+    emotions: ["Detachment","Indifference","Numbness","Disengagement","Boredom","Resignation","Listlessness"],
+  },
 ];
 
-// ── 5-layer pipeline ──────────────────────────────────────────────────────────
-const steps = [
-  {
-    number: "00", title: "Declare", color: "#0D916A",
-    desc: "Visitors to sentira.net choose how they feel right now from 82 emotions across 12 families — anonymous, no account required. These direct declarations are geo-tagged and weighted at 15% of the city aggregate.",
-  },
-  {
-    number: "01", title: "Harvest", color: "#378ADD",
-    desc: "Every 15 minutes, Sentira ingests tens of thousands of open web signals — major news publications, wire services, and public digital channels tracked by GDELT 2.0 and leading news intelligence APIs — across every major global market.",
-  },
-  {
-    number: "02", title: "Classify", color: "#7F77DD",
-    desc: "Each signal is assigned one of 82 nuanced emotions across 12 families using AI-powered language models. Every classification also receives a topic label: disaster, sports, politics, culture, or economy.",
-  },
-  {
-    number: "03", title: "Normalize", color: "#1D9E75",
-    desc: "The deviation score is Sentira's proprietary signal. Every emotion reading is measured against the specific baseline for that topic in that city. A city's anxiety about economic news only means something when measured against how anxious that city normally is about economic news. That comparison is the intelligence.",
-  },
-  {
-    number: "04", title: "Visualize", color: "#EF9F27",
-    desc: "Deviation scores render onto the live ROYGBIV emotion atlas — geographic deviation intelligence in color, not text. City drilldowns, timeline comparisons, event tracking, and enterprise API access.",
-  },
+const howItWorks = [
+  { num: "00", name: "Declare", desc: "You submit how you feel directly via the pulse check. Anonymous. No account needed. Your signal joins the live atlas." },
+  { num: "01", name: "Harvest", desc: "Sentira ingests tens of thousands of open web signals every 15 minutes from GDELT 2.0 and global news APIs." },
+  { num: "02", name: "Classify", desc: "Each signal is assigned one of 82 named emotions and a topic — disaster, politics, economy, sports, culture, crime." },
+  { num: "03", name: "Normalize", desc: "The key innovation. Every emotion is measured against the topic-specific city baseline to produce a deviation score." },
+  { num: "04", name: "Visualize", desc: "Deviation scores render onto the live ROYGBIV world atlas with city drilldowns, timelines, and API access." },
 ];
 
-// ── Use cases — enterprise voice ──────────────────────────────────────────────
-const useCases = [
+const solutions = [
   {
-    icon: "📡",
-    accent: "#378ADD",
     title: "News Intelligence",
-    desc: "Track the emotional deviation of cities in response to breaking events — not what the headlines say, but how differently audiences feel compared to their own baseline. Know the story before it becomes the story.",
-    quote: "We tracked emotional deviation across six European cities during the election cycle. Sentira showed the anxiety signal peaking 72 hours before the vote. Nothing else in our stack had it.",
+    icon: "📡",
+    quote: "\"We track civic emotional response to breaking events before editorial consensus forms.\"",
+    desc: "Detect how cities emotionally diverge from global baseline the moment a story breaks. Move faster than the narrative.",
   },
   {
-    icon: "📈",
-    accent: "#EF9F27",
     title: "Financial Intelligence",
-    desc: "Macro emotional deviation routinely precedes market movement. A city running 2.4 standard deviations above its economic anxiety baseline is not a sentiment score — it is a proprietary early-warning signal your existing data feeds do not carry.",
-    quote: "The Shanghai deviation score ran above economic anxiety baseline for three consecutive 15-minute windows before the index moved. That is not coincidence.",
+    icon: "📈",
+    quote: "\"Pre-market emotional deviation signals that no traditional data provider offers.\"",
+    desc: "City-level emotional deviation indexed against economic events. An independent signal for quantitative models.",
   },
   {
-    icon: "🔬",
-    accent: "#639922",
     title: "Institutional Research",
-    desc: "The first platform to distinguish between Dread and Apprehension at city scale, in real time, with historical baselines. Population-scale emotional deviation data, ethically sourced, depersonalized, and available via API for longitudinal study.",
-    quote: "For the first time we have a dataset that distinguishes named emotions at city scale across 18 months of historical baseline. That is a decade of research compressed.",
+    icon: "🏛️",
+    quote: "\"Longitudinal emotional data normalized by topic — a new lens on collective human response.\"",
+    desc: "Academic-grade methodology with full audit trail. Topic-normalized baselines. Deviation scoring. City fingerprints.",
   },
   {
-    icon: "🎯",
-    accent: "#D4537E",
     title: "Campaign Intelligence",
-    desc: "A city running above frustration baseline on economic news is not the right moment for a luxury product launch. A city surging above its joy baseline for cultural events is. Sentira tells you which moment you are in before you spend the budget.",
-    quote: "We held the launch. Sentira showed target cities above frustration baseline. We waited 11 days. The re-timed launch exceeded projections by 34%.",
+    icon: "🎯",
+    quote: "\"We time campaign activation against city emotional baselines, not gut instinct.\"",
+    desc: "Know when a city is emotionally receptive before you spend. Sponsored pulse checks. Brand sentiment deviation.",
   },
 ];
 
-// ── City names for pulse check confirmation ───────────────────────────────────
-const cities = ["Los Angeles", "New York", "London", "Tokyo", "Chicago", "Sydney", "Toronto", "Berlin"];
+const emotions_pulse = [
+  { name: "Anger",      color: "#D85A30", def: "A high-energy response to perceived injustice or threat.",     city: "Frustrated"    },
+  { name: "Anxiety",    color: "#7F77DD", def: "A state of unease directed at uncertain or unknown outcomes.",  city: "Anxious"       },
+  { name: "Calm",       color: "#1D9E75", def: "A settled, low-arousal state of emotional equilibrium.",        city: "Calm"          },
+  { name: "Disgust",    color: "#E24B4A", def: "A strong aversion to something perceived as wrong or harmful.", city: "Unsettled"     },
+  { name: "Joy",        color: "#EF9F27", def: "A bright, expansive feeling of pleasure or contentment.",       city: "Joyful"        },
+  { name: "Love",       color: "#D4537E", def: "A warm connective feeling directed toward others.",             city: "Warm"          },
+  { name: "Sadness",    color: "#378ADD", def: "A quiet withdrawal in response to loss or disappointment.",     city: "Melancholic"   },
+  { name: "Shame",      color: "#534AB7", def: "A painful awareness of falling short of one's own standards.", city: "Introspective" },
+  { name: "Awe",        color: "#639922", def: "A feeling of wonder in response to something vast or profound.",city: "Moved"         },
+];
 
-export default function LandingPage() {
+const topics = ["Economy","Politics","Sports","Culture","Disaster","Personal"];
 
+// ─── ROYGBIV color bar ────────────────────────────────────────────────────────
+
+const roygbiv = [
+  { label: "R", color: "#D85A30", emotions: "Anger · Disgust" },
+  { label: "O", color: "#E87A3A", emotions: "Frustration · Irritation" },
+  { label: "Y", color: "#EF9F27", emotions: "Joy · Pride" },
+  { label: "G", color: "#1D9E75", emotions: "Calm · Excitement" },
+  { label: "B", color: "#378ADD", emotions: "Sadness · Grief" },
+  { label: "I", color: "#7F77DD", emotions: "Anxiety · Fear" },
+  { label: "V", color: "#534AB7", emotions: "Awe · Shame" },
+];
+
+// ─── COMPONENT ───────────────────────────────────────────────────────────────
+
+export default function Home() {
   // Pulse check state
-  const [pulseFamily, setPulseFamily] = useState<typeof emotionFamilies[0] | null>(null);
-  const [pulseDone, setPulseDone] = useState(false);
-  const randomCity = cities[Math.floor(Math.random() * cities.length)];
-
-  function handlePulse(f: typeof emotionFamilies[0]) {
-    setPulseFamily(f);
-    setPulseDone(true);
-  }
-
-  function resetPulse() {
-    setPulseFamily(null);
-    setPulseDone(false);
-  }
+  const [pulseStep, setPulseStep] = useState<"entry" | "processing" | "reveal" | "tile-done">("entry");
+  const [selectedTile, setSelectedTile] = useState<{ name: string; color: string; def: string; city: string } | null>(null);
+  const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
+  const [textInput, setTextInput] = useState("");
+  const [revealEmotion, setRevealEmotion] = useState<{ name: string; color: string; def: string; city: string } | null>(null);
+  const [citySync, setCitySync] = useState("");
+  const [processingMsg, setProcessingMsg] = useState("Reading your signal...");
 
   // Waitlist state
   const [waitlistEmail, setWaitlistEmail] = useState("");
   const [waitlistDone, setWaitlistDone] = useState(false);
 
-  function handleWaitlist(e: React.FormEvent) {
-    e.preventDefault();
-    if (waitlistEmail) setWaitlistDone(true);
+  // Pulse check — tile path
+  function submitTile() {
+    if (!selectedTile) return;
+    const msgs = ["Reading your signal...", "Classifying emotion...", "Matching city baseline..."];
+    setPulseStep("processing");
+    let i = 0;
+    const t = setInterval(() => {
+      if (i < msgs.length) { setProcessingMsg(msgs[i++]); }
+      else { clearInterval(t); setPulseStep("tile-done"); }
+    }, 650);
+  }
+
+  // Pulse check — text path
+  function submitText() {
+    const pool = emotions_pulse;
+    const em = pool[Math.floor(Math.random() * pool.length)];
+    setRevealEmotion(em);
+    const syncs = ["You are in sync with your city.", "You are diverging from your city."];
+    setCitySync(syncs[Math.floor(Math.random() * 2)]);
+    const msgs = ["Reading your signal...", "Classifying emotion...", "Matching city baseline...", "Calculating deviation..."];
+    setPulseStep("processing");
+    let i = 0;
+    const t = setInterval(() => {
+      if (i < msgs.length) { setProcessingMsg(msgs[i++]); }
+      else { clearInterval(t); setPulseStep("reveal"); }
+    }, 650);
+  }
+
+  function resetPulse() {
+    setPulseStep("entry");
+    setSelectedTile(null);
+    setSelectedTopic(null);
+    setTextInput("");
+    setRevealEmotion(null);
   }
 
   return (
-    <div className="min-h-screen bg-[#F4F0E8] text-[#0C0F1A] font-sans">
+    <main style={{ background: "#F4F0E8", minHeight: "100vh", color: "#0C0F1A" }}>
 
-      {/* ── NAV ── */}
-      <nav className="fixed top-0 left-0 right-0 z-50 border-b border-black/[0.07] bg-white/92 backdrop-blur-md">
-        <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
-          <div>
-            <span className="text-base font-bold tracking-[0.35em] text-[#0C0F1A] uppercase">Sentira™</span>
-            <span className="ml-3 text-[10px] text-[#9AAAB8] uppercase tracking-widest hidden sm:inline">Sentira™ · Deviation Intelligence Platform · Privacy-First</span>
-          </div>
-          <div className="flex items-center gap-6 text-sm text-[#4E5A6E]">
-            <a href="#pulse" className="hover:text-[#0C0F1A] transition">Check In</a>
-            <a href="#product" className="hover:text-[#0C0F1A] transition">Product</a>
-            <a href="#how-it-works" className="hover:text-[#0C0F1A] transition">How It Works</a>
-            <a href="#use-cases" className="hover:text-[#0C0F1A] transition">Solutions</a>
-            <a href="mailto:hello@sentira.net" className="bg-[#0C0F1A] text-[#F4F0E8] font-semibold px-4 py-1.5 rounded-full text-sm hover:bg-[#1a2240] transition">
-              Enterprise Access
-            </a>
-          </div>
+      {/* ── NAV ─────────────────────────────────────────────────────────── */}
+      <nav style={{
+        display: "flex", alignItems: "center", justifyContent: "space-between",
+        padding: "1.25rem 2rem", borderBottom: "0.5px solid rgba(12,15,26,0.1)",
+        background: "#F4F0E8", position: "sticky", top: 0, zIndex: 50,
+      }}>
+        <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 13, letterSpacing: "0.05em" }}>
+          SENTIRA™ · <span style={{ color: "#0D916A" }}>Deviation Intelligence Platform</span> · Privacy-First
+        </span>
+        <div style={{ display: "flex", gap: "1.5rem", alignItems: "center" }}>
+          {["Check In","Product","How It Works","Solutions"].map(l => (
+            <a key={l} href={`#${l.toLowerCase().replace(/ /g,"-")}`}
+              style={{ fontSize: 13, color: "#4E5A6E", textDecoration: "none" }}>{l}</a>
+          ))}
+          <a href="mailto:hello@sentira.net?subject=Enterprise Access Request — Sentira"
+            style={{ fontSize: 12, background: "#0C0F1A", color: "#F4F0E8", padding: "8px 16px", borderRadius: 6, textDecoration: "none", fontFamily: "'JetBrains Mono', monospace", letterSpacing: "0.04em" }}>
+            Enterprise Access
+          </a>
         </div>
       </nav>
 
-      {/* ── HERO ── */}
-      <section className="pt-36 pb-20 px-6 text-center relative overflow-hidden">
-        <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[700px] h-[420px] bg-[#1D9E75]/[0.07] rounded-full blur-3xl pointer-events-none" />
-        <div className="relative max-w-3xl mx-auto">
-
-          {/* Platform badge */}
-          <div className="inline-flex items-center gap-2 bg-[#1D9E75]/10 border border-[#1D9E75]/25 text-[#0D916A] text-xs px-4 py-1.5 rounded-full mb-8 font-semibold tracking-[0.15em] uppercase">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#0D916A] animate-pulse" />
-            Sentira™ Emotion Intelligence Platform · Beta Access Open
-          </div>
-
-          {/* Headline */}
-          <h1 className="text-5xl sm:text-6xl font-extrabold tracking-tight leading-[1.05] mb-4 text-[#0C0F1A]">
-            The world has<br />
-            <span className="text-[#0D916A] font-light italic">feelings.</span>
-          </h1>
-
-          {/* Master tagline */}
-          <p className="text-xl sm:text-2xl font-light text-[#0C0F1A] mb-6 tracking-tight">
-            Not what the world feels.<br />
-            <span className="font-semibold">How differently it feels.</span>
-          </p>
-
-          {/* Platform description */}
-          <p className="text-base text-[#9AAAB8] leading-relaxed max-w-2xl mx-auto mb-10 font-light">
-            Sentira™ is a real-time deviation intelligence platform. We map not what cities feel — but how differently they feel compared to what the world expects. Powered by the open web. Organized by a proprietary 82-emotion taxonomy. Updated every 15 minutes.
-          </p>
-
-          {/* CTAs */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-14">
-            <a href="mailto:hello@sentira.net" className="bg-[#0C0F1A] text-[#F4F0E8] font-bold px-8 py-3.5 rounded-full text-base hover:bg-[#1a2240] transition shadow-lg">
-              Request enterprise access
-            </a>
-            <a href="#pulse" className="border border-black/20 text-[#4E5A6E] px-8 py-3.5 rounded-full text-base hover:bg-black/5 transition">
-              How are you feeling?
-            </a>
-          </div>
-
-          {/* KPI row */}
-          <div className="flex justify-center items-center gap-8 sm:gap-12">
-            <div className="text-center">
-              <div className="text-3xl font-bold text-[#0C0F1A]">82</div>
-              <div className="text-[10px] uppercase tracking-widest text-[#9AAAB8] mt-1">Emotions</div>
+      {/* ── HERO ────────────────────────────────────────────────────────── */}
+      <section style={{ maxWidth: 960, margin: "0 auto", padding: "6rem 2rem 4rem", textAlign: "center" }}>
+        <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, letterSpacing: "0.12em", color: "#9AAAB8", marginBottom: "1rem", textTransform: "uppercase" }}>
+          Sentira™ Emotion Intelligence Platform · Beta Access Open
+        </div>
+        <h1 style={{ fontFamily: "'Fraunces', serif", fontSize: "clamp(2.5rem, 6vw, 4rem)", lineHeight: 1.15, marginBottom: "1.5rem", fontWeight: 400 }}>
+          The world has feelings.<br />
+          <em style={{ color: "#0D916A" }}>Divergent</em> feelings.
+        </h1>
+        <p style={{ fontSize: 18, color: "#4E5A6E", maxWidth: 560, margin: "0 auto 2.5rem", lineHeight: 1.7 }}>
+          Not what the world feels. How differently it feels.
+        </p>
+        <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap", marginBottom: "4rem" }}>
+          <a href="mailto:hello@sentira.net?subject=Enterprise Access Request — Sentira"
+            style={{ background: "#0C0F1A", color: "#F4F0E8", padding: "14px 28px", borderRadius: 8, textDecoration: "none", fontSize: 14, fontWeight: 500 }}>
+            Request enterprise access
+          </a>
+          <a href="#check-in"
+            style={{ background: "transparent", color: "#0C0F1A", padding: "14px 28px", borderRadius: 8, textDecoration: "none", fontSize: 14, border: "0.5px solid rgba(12,15,26,0.25)" }}>
+            How are you feeling? →
+          </a>
+        </div>
+        <div style={{ display: "flex", gap: "2rem", justifyContent: "center", flexWrap: "wrap" }}>
+          {[["82", "Emotions"], ["Global", "Coverage"], ["15m", "Updates"], ["Open Web", "Only"]].map(([val, label]) => (
+            <div key={label} style={{ textAlign: "center" }}>
+              <div style={{ fontFamily: "'Fraunces', serif", fontSize: 28, color: "#0C0F1A" }}>{val}</div>
+              <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: "#9AAAB8", letterSpacing: "0.1em", textTransform: "uppercase" }}>{label}</div>
             </div>
-            <div className="w-px h-10 bg-black/10" />
-            <div className="text-center">
-              <div className="text-3xl font-bold text-[#0C0F1A]">Global</div>
-              <div className="text-[10px] uppercase tracking-widest text-[#9AAAB8] mt-1">Coverage</div>
-            </div>
-            <div className="w-px h-10 bg-black/10" />
-            <div className="text-center">
-              <div className="text-3xl font-bold text-[#0C0F1A]">15m</div>
-              <div className="text-[10px] uppercase tracking-widest text-[#9AAAB8] mt-1">Updates</div>
-            </div>
-            <div className="w-px h-10 bg-black/10" />
-            <div className="text-center">
-              <div className="text-3xl font-bold text-[#0C0F1A]">Open</div>
-              <div className="text-[10px] uppercase tracking-widest text-[#9AAAB8] mt-1">Web</div>
-            </div>
-          </div>
+          ))}
         </div>
       </section>
 
-      {/* ── PULSE CHECK ── */}
-      <section id="pulse" className="py-20 px-6 bg-white border-y border-black/[0.07]">
-        <div className="max-w-3xl mx-auto text-center">
-          {!pulseDone ? (
-            <>
-              <div className="inline-flex items-center gap-2 bg-[#1D9E75]/10 border border-[#1D9E75]/25 text-[#0D916A] text-xs px-4 py-1.5 rounded-full mb-6 font-semibold tracking-[0.15em] uppercase">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#0D916A] animate-pulse" />
-                Anonymous · No account required
+      {/* ── PULSE CHECK (DUAL PATH) ──────────────────────────────────────── */}
+      <section id="check-in" style={{ maxWidth: 960, margin: "0 auto", padding: "4rem 2rem" }}>
+
+        {/* Demo banner */}
+        <div style={{
+          display: "flex", alignItems: "center", gap: 10, background: "white",
+          border: "0.5px solid rgba(239,159,39,0.4)", borderRadius: 8,
+          padding: "10px 16px", marginBottom: "1.5rem", fontSize: 12, color: "#4E5A6E",
+        }}>
+          <span style={{ background: "#EF9F27", color: "white", borderRadius: 4, padding: "2px 8px", fontSize: 10, fontFamily: "'JetBrains Mono', monospace", fontWeight: 500, letterSpacing: "0.06em", flexShrink: 0 }}>DEMO</span>
+          <span>This is an interactive demo of the Sentira™ pulse check. Colors are illustrative — real-time AI classification launches with the full platform.</span>
+        </div>
+
+        <div style={{ background: "white", borderRadius: 12, border: "0.5px solid rgba(12,15,26,0.1)", overflow: "hidden" }}>
+
+          {/* Header */}
+          <div style={{ padding: "1.5rem 2rem", borderBottom: "0.5px solid rgba(12,15,26,0.08)" }}>
+            <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, letterSpacing: "0.1em", color: "#9AAAB8", textTransform: "uppercase", marginBottom: "0.4rem" }}>Layer 0 · Declare</div>
+            <div style={{ fontFamily: "'Fraunces', serif", fontSize: 22, color: "#0C0F1A" }}>
+              How are you feeling <em style={{ color: "#0D916A" }}>right now?</em>
+            </div>
+            <div style={{ fontSize: 13, color: "#4E5A6E", marginTop: "0.3rem" }}>Choose your path — both signals contribute anonymously to the Sentira™ atlas.</div>
+          </div>
+
+          {/* Entry step */}
+          {pulseStep === "entry" && (
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 0.5px 1fr" }}>
+
+              {/* LEFT — tile path */}
+              <div style={{ padding: "1.5rem 2rem" }}>
+                <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, letterSpacing: "0.1em", color: "#9AAAB8", textTransform: "uppercase", marginBottom: "1rem", display: "flex", alignItems: "center", gap: 8 }}>
+                  Choose an emotion
+                  <span style={{ background: "#0C0F1A", color: "#F4F0E8", borderRadius: 999, padding: "2px 8px", fontSize: 9 }}>Quick</span>
+                </div>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 6, marginBottom: "1.25rem" }}>
+                  {emotions_pulse.map(em => (
+                    <button key={em.name} onClick={() => setSelectedTile(em)}
+                      style={{
+                        background: selectedTile?.name === em.name ? em.color + "18" : "white",
+                        border: `0.5px solid ${selectedTile?.name === em.name ? em.color : "rgba(12,15,26,0.12)"}`,
+                        borderRadius: 8, padding: "10px 6px", cursor: "pointer", textAlign: "center",
+                        fontSize: 11, color: selectedTile?.name === em.name ? em.color : "#4E5A6E",
+                        fontFamily: "'Manrope', sans-serif", transition: "all 0.12s",
+                      }}>
+                      <div style={{ width: 18, height: 18, borderRadius: "50%", background: em.color, margin: "0 auto 5px" }} />
+                      {em.name}
+                    </button>
+                  ))}
+                </div>
+                <button onClick={submitTile} disabled={!selectedTile}
+                  style={{
+                    width: "100%", background: selectedTile ? "#0C0F1A" : "rgba(12,15,26,0.15)",
+                    color: selectedTile ? "#F4F0E8" : "#9AAAB8", border: "none", borderRadius: 8,
+                    padding: "11px 18px", fontFamily: "'Manrope', sans-serif", fontSize: 13,
+                    fontWeight: 500, cursor: selectedTile ? "pointer" : "not-allowed", transition: "all 0.15s",
+                  }}>
+                  Declare this signal →
+                </button>
               </div>
-              <h2 className="text-3xl sm:text-4xl font-extrabold mb-3 text-[#0C0F1A] tracking-tight">
-                How are you feeling<br />
-                <span className="text-[#0D916A] font-light italic">right now?</span>
-              </h2>
-              <p className="text-[#9AAAB8] mb-6 font-light text-sm">
-                Select the emotion family that best describes how you feel. Your signal joins the live Sentira™ deviation atlas — anonymous and immediate.
-              </p>
-              <p className="text-[10px] text-[#C8C4BA] mb-8 font-light">
-                Your IP is used only to identify your city and is immediately discarded. No personal data is stored. No account required.
-              </p>
-              <div className="grid grid-cols-3 sm:grid-cols-4 gap-3 max-w-2xl mx-auto">
-                {emotionFamilies.map((f) => (
-                  <button
-                    key={f.family}
-                    onClick={() => handlePulse(f)}
-                    className="flex flex-col items-center gap-2 p-4 rounded-2xl border transition-all hover:scale-105 hover:shadow-md active:scale-95"
-                    style={{ background: f.light, borderColor: f.color + "30" }}
-                  >
-                    <div className="w-9 h-9 rounded-full shadow-sm" style={{ background: f.color }} />
-                    <span className="text-xs font-semibold" style={{ color: f.dark }}>{f.family}</span>
-                  </button>
-                ))}
-              </div>
-              <p className="text-[10px] uppercase tracking-widest text-[#C8C4BA] mt-8">
-                Full check-in launching soon — anonymous tier · personal history (opt-in) · enterprise deviation API
-              </p>
-            </>
-          ) : (
-            <>
-              <div
-                className="w-14 h-14 rounded-full mx-auto mb-5 flex items-center justify-center shadow-md"
-                style={{ background: pulseFamily?.light }}
-              >
-                <div className="w-8 h-8 rounded-full" style={{ background: pulseFamily?.color }} />
-              </div>
-              <h2 className="text-2xl font-bold mb-2 text-[#0C0F1A]">Signal received.</h2>
-              <p className="text-[#9AAAB8] font-light text-sm mb-8">
-                Your <strong style={{ color: pulseFamily?.color }}>{pulseFamily?.family}</strong> signal has been added to the live Sentira™ deviation atlas.
-              </p>
-              <div className="bg-[#F4F0E8] border border-black/[0.07] rounded-2xl p-5 text-left max-w-xl mx-auto mb-6">
-                <p className="text-[10px] uppercase tracking-widest text-[#9AAAB8] mb-3 font-semibold">Your signal in the deviation feed</p>
-                <div className="flex items-start gap-3">
-                  <div
-                    className="w-5 h-5 rounded-full flex-shrink-0 mt-0.5 border-2"
-                    style={{ background: pulseFamily?.light, borderColor: pulseFamily?.color + "50" }}
-                  />
-                  <div className="flex-1">
-                    <div className="flex flex-wrap items-center gap-2 mb-1.5">
-                      <span className="text-sm font-semibold text-[#0C0F1A]">{randomCity}</span>
-                      <span className="text-xs px-2.5 py-0.5 rounded-full font-semibold"
-                        style={{ background: pulseFamily?.light, color: pulseFamily?.dark }}>
-                        {pulseFamily?.family}
-                      </span>
-                      <span className="text-xs px-2.5 py-0.5 rounded-full bg-[#E8F5F1] text-[#0D916A] font-semibold">
-                        declared · Sentira™ Layer 0
-                      </span>
-                      <span className="text-xs text-[#9AAAB8]">just now</span>
-                    </div>
-                    <p className="text-xs text-[#9AAAB8] font-light">
-                      Anonymous · weighted at 15% of city deviation aggregate · anomaly-checked against passive baseline
-                    </p>
+
+              {/* Divider */}
+              <div style={{ background: "rgba(12,15,26,0.1)" }} />
+
+              {/* RIGHT — text path */}
+              <div style={{ padding: "1.5rem 2rem" }}>
+                <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, letterSpacing: "0.1em", color: "#9AAAB8", textTransform: "uppercase", marginBottom: "1rem", display: "flex", alignItems: "center", gap: 8 }}>
+                  Describe it yourself
+                  <span style={{ background: "#0D916A", color: "white", borderRadius: 999, padding: "2px 8px", fontSize: 9 }}>Expressive</span>
+                </div>
+                <textarea value={textInput} onChange={e => setTextInput(e.target.value)}
+                  placeholder="e.g. I feel unsettled about the news today — nothing specific, just a low hum of dread."
+                  style={{
+                    width: "100%", background: "#F4F0E8", border: "0.5px solid rgba(12,15,26,0.15)",
+                    borderRadius: 8, padding: "12px", fontFamily: "'Manrope', sans-serif",
+                    fontSize: 13, color: "#0C0F1A", resize: "none", height: 80,
+                    marginBottom: "0.75rem", boxSizing: "border-box",
+                  }} />
+                <div style={{ fontSize: 11, fontFamily: "'JetBrains Mono', monospace", color: "#9AAAB8", letterSpacing: "0.08em", marginBottom: "0.5rem", textTransform: "uppercase" }}>
+                  Topic (optional)
+                </div>
+                <div style={{ display: "flex", gap: 5, flexWrap: "wrap", marginBottom: "1rem" }}>
+                  {topics.map(t => (
+                    <button key={t} onClick={() => setSelectedTopic(selectedTopic === t ? null : t)}
+                      style={{
+                        padding: "4px 10px", borderRadius: 999, fontSize: 11,
+                        border: "0.5px solid rgba(12,15,26,0.15)", cursor: "pointer",
+                        fontFamily: "'Manrope', sans-serif", transition: "all 0.12s",
+                        background: selectedTopic === t ? "#0C0F1A" : "white",
+                        color: selectedTopic === t ? "#F4F0E8" : "#4E5A6E",
+                      }}>{t}</button>
+                  ))}
+                </div>
+
+                {/* Tier 2 — grayed out with coming soon */}
+                <div style={{
+                  display: "flex", alignItems: "flex-start", gap: 8,
+                  background: "rgba(12,15,26,0.04)", border: "0.5px solid rgba(12,15,26,0.08)",
+                  borderRadius: 8, padding: "10px 12px", marginBottom: "1rem", opacity: 0.5,
+                }}>
+                  <input type="checkbox" disabled style={{ width: 14, height: 14, flexShrink: 0, marginTop: 2, cursor: "not-allowed" }} />
+                  <div style={{ fontSize: 11, color: "#4E5A6E", lineHeight: 1.6 }}>
+                    <strong style={{ color: "#0C0F1A" }}>Save my color history</strong> — track your emotion fingerprint over time.
+                    <span style={{ display: "inline-block", marginLeft: 6, background: "#9AAAB8", color: "white", borderRadius: 4, padding: "1px 6px", fontSize: 9, fontFamily: "'JetBrains Mono', monospace", letterSpacing: "0.06em", verticalAlign: "middle" }}>COMING SOON</span>
                   </div>
                 </div>
+
+                <button onClick={submitText} disabled={!textInput.trim()}
+                  style={{
+                    width: "100%", background: textInput.trim() ? "#0D916A" : "rgba(12,15,26,0.15)",
+                    color: textInput.trim() ? "white" : "#9AAAB8", border: "none", borderRadius: 8,
+                    padding: "11px 18px", fontFamily: "'Manrope', sans-serif", fontSize: 13,
+                    fontWeight: 500, cursor: textInput.trim() ? "pointer" : "not-allowed", transition: "all 0.15s",
+                  }}>
+                  Read my signal ✦
+                </button>
               </div>
-              <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <button
-                  onClick={resetPulse}
-                  className="border border-black/15 text-[#4E5A6E] px-6 py-2.5 rounded-full text-sm hover:bg-black/5 transition font-medium"
-                >
+            </div>
+          )}
+
+          {/* Processing step */}
+          {pulseStep === "processing" && (
+            <div style={{ padding: "4rem 2rem", textAlign: "center" }}>
+              <div style={{
+                width: 64, height: 64, borderRadius: "50%",
+                background: selectedTile?.color || revealEmotion?.color || "#0D916A",
+                margin: "0 auto 1.5rem",
+                animation: "pulse 1.4s ease-in-out infinite",
+              }} />
+              <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: "#9AAAB8", letterSpacing: "0.08em" }}>
+                {processingMsg}
+              </div>
+              <style>{`@keyframes pulse{0%,100%{transform:scale(0.88);opacity:0.75}50%{transform:scale(1.1);opacity:1}}`}</style>
+            </div>
+          )}
+
+          {/* Tile-done step */}
+          {pulseStep === "tile-done" && selectedTile && (
+            <div style={{ padding: "2rem", textAlign: "center" }}>
+              <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: "#9AAAB8", letterSpacing: "0.06em", marginBottom: "1rem" }}>
+                declared · Sentira™ <span style={{ color: "#0D916A" }}>Layer 0</span>
+              </div>
+              <div style={{
+                width: 96, height: 96, borderRadius: "50%", background: selectedTile.color,
+                margin: "0 auto 1.25rem", animation: "bloom 0.5s ease-out",
+              }} />
+              <style>{`@keyframes bloom{from{transform:scale(0.3);opacity:0}to{transform:scale(1);opacity:1}}`}</style>
+              <div style={{ fontFamily: "'Fraunces', serif", fontSize: 24, color: "#0C0F1A", marginBottom: "0.25rem" }}>{selectedTile.name}</div>
+              <div style={{ fontSize: 13, color: "#4E5A6E", fontStyle: "italic", marginBottom: "1.5rem" }}>"{selectedTile.def}"</div>
+              <div style={{
+                display: "flex", alignItems: "center", gap: 10, background: "#F4F0E8",
+                border: "0.5px solid rgba(12,15,26,0.08)", borderRadius: 8,
+                padding: "12px 16px", marginBottom: "1.5rem", textAlign: "left",
+              }}>
+                <div style={{ width: 10, height: 10, borderRadius: "50%", background: selectedTile.color, flexShrink: 0 }} />
+                <div style={{ fontSize: 12, color: "#4E5A6E", lineHeight: 1.5 }}>
+                  <strong style={{ color: "#0C0F1A" }}>Los Angeles is running {selectedTile.city} right now.</strong> Your anonymous signal has been added to the atlas.
+                </div>
+              </div>
+              <button onClick={resetPulse} style={{ background: "transparent", color: "#4E5A6E", border: "0.5px solid rgba(12,15,26,0.15)", borderRadius: 8, padding: "9px 18px", fontSize: 12, cursor: "pointer", fontFamily: "'Manrope', sans-serif" }}>
+                Submit another signal
+              </button>
+            </div>
+          )}
+
+          {/* Text reveal step */}
+          {pulseStep === "reveal" && revealEmotion && (
+            <div style={{ padding: "2rem" }}>
+              <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 11, color: "#9AAAB8", letterSpacing: "0.06em", marginBottom: "1rem", textAlign: "center" }}>
+                declared · Sentira™ <span style={{ color: "#0D916A" }}>Layer 0</span>
+              </div>
+              <div style={{
+                width: 96, height: 96, borderRadius: "50%", background: revealEmotion.color,
+                margin: "0 auto 1.25rem", animation: "bloom 0.5s ease-out",
+              }} />
+              <div style={{ textAlign: "center", marginBottom: "1.5rem" }}>
+                <div style={{ fontFamily: "'Fraunces', serif", fontSize: 24, color: "#0C0F1A", marginBottom: "0.25rem" }}>{revealEmotion.name}</div>
+                <div style={{ fontSize: 13, color: "#4E5A6E", fontStyle: "italic" }}>"{revealEmotion.def}"</div>
+              </div>
+              <div style={{
+                display: "flex", alignItems: "center", gap: 10, background: "#F4F0E8",
+                border: "0.5px solid rgba(12,15,26,0.08)", borderRadius: 8,
+                padding: "12px 16px", marginBottom: "1rem",
+              }}>
+                <div style={{ width: 10, height: 10, borderRadius: "50%", background: revealEmotion.color, flexShrink: 0 }} />
+                <div style={{ fontSize: 12, color: "#4E5A6E", lineHeight: 1.5 }}>
+                  <strong style={{ color: "#0C0F1A" }}>Los Angeles is running {revealEmotion.city}.</strong> {citySync} Deviation: <strong style={{ color: "#0C0F1A" }}>+1.8σ above global baseline.</strong>
+                </div>
+              </div>
+              <div style={{ textAlign: "center", marginTop: "1rem" }}>
+                <div style={{ fontSize: 12, color: "#9AAAB8", marginBottom: "0.75rem" }}>Your anonymous signal has been added to the Los Angeles atlas.</div>
+                <button onClick={resetPulse} style={{ background: "transparent", color: "#4E5A6E", border: "0.5px solid rgba(12,15,26,0.15)", borderRadius: 8, padding: "9px 18px", fontSize: 12, cursor: "pointer", fontFamily: "'Manrope', sans-serif" }}>
                   Submit another signal
                 </button>
-                <a
-                  href="#waitlist"
-                  className="bg-[#0C0F1A] text-[#F4F0E8] px-6 py-2.5 rounded-full text-sm hover:bg-[#1a2240] transition font-semibold"
-                >
-                  Get notified when full check-in launches →
-                </a>
               </div>
-            </>
+            </div>
+          )}
+
+          {/* Footer */}
+          <div style={{ padding: "0.75rem 2rem", borderTop: "0.5px solid rgba(12,15,26,0.08)", background: "rgba(12,15,26,0.02)", textAlign: "center", fontSize: 11, color: "#9AAAB8", fontFamily: "'JetBrains Mono', monospace", letterSpacing: "0.05em" }}>
+            Anonymous signal collection · No personal data stored · No individual tracking
+          </div>
+
+        </div>
+      </section>
+
+      {/* ── WAITLIST ─────────────────────────────────────────────────────── */}
+      <section id="waitlist" style={{ maxWidth: 960, margin: "0 auto", padding: "2rem 2rem 4rem" }}>
+        <div style={{ background: "#0C0F1A", borderRadius: 12, padding: "2.5rem", textAlign: "center" }}>
+          <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, color: "#9AAAB8", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: "0.75rem" }}>Coming Soon</div>
+          <div style={{ fontFamily: "'Fraunces', serif", fontSize: 22, color: "#F4F0E8", marginBottom: "0.5rem" }}>Want your full Sentira™ emotion check-in?</div>
+          <div style={{ fontSize: 13, color: "#9AAAB8", marginBottom: "1.5rem" }}>Personal emotion history · Your Emotion Fingerprint · City comparison · $7–12/mo</div>
+          {!waitlistDone ? (
+            <div style={{ display: "flex", gap: "0.75rem", justifyContent: "center", flexWrap: "wrap" }}>
+              <input type="email" value={waitlistEmail} onChange={e => setWaitlistEmail(e.target.value)}
+                placeholder="hello@yourcompany.com"
+                style={{ padding: "11px 16px", borderRadius: 8, border: "0.5px solid rgba(244,240,232,0.2)", background: "rgba(244,240,232,0.08)", color: "#F4F0E8", fontSize: 13, fontFamily: "'Manrope', sans-serif", minWidth: 260 }} />
+              <button onClick={() => { if (waitlistEmail) setWaitlistDone(true); }}
+                style={{ background: "#0D916A", color: "white", border: "none", borderRadius: 8, padding: "11px 20px", fontSize: 13, fontWeight: 500, cursor: "pointer", fontFamily: "'Manrope', sans-serif" }}>
+                Join the waitlist
+              </button>
+            </div>
+          ) : (
+            <div style={{ color: "#0D916A", fontFamily: "'JetBrains Mono', monospace", fontSize: 13 }}>✓ You're on the list. We'll be in touch.</div>
           )}
         </div>
       </section>
 
-      {/* ── WAITLIST BANNER ── */}
-      <section id="waitlist" className="py-14 px-6 bg-[#F4F0E8] border-b border-black/[0.07]">
-        <div className="max-w-4xl mx-auto">
-          <div className="bg-white border border-black/[0.07] rounded-2xl p-8 flex flex-col sm:flex-row items-center gap-8 shadow-sm">
-            <div className="flex-1 text-center sm:text-left">
-              <div className="inline-flex items-center gap-2 bg-[#1D9E75]/10 border border-[#1D9E75]/25 text-[#0D916A] text-[10px] px-3 py-1 rounded-full mb-3 font-semibold tracking-[0.15em] uppercase">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#0D916A] animate-pulse" />
-                Coming Soon
-              </div>
-              <h3 className="text-xl font-bold text-[#0C0F1A] mb-2">Want the full Sentira™ emotion check-in?</h3>
-              <p className="text-sm text-[#4E5A6E] font-light leading-relaxed max-w-sm">
-                Be notified when the full check-in launches. Anonymous signals feed the live atlas. Optional account creation unlocks your personal emotion history — always private, always yours.
-              </p>
-            </div>
-            <div className="w-full sm:w-auto flex-shrink-0">
-              {!waitlistDone ? (
-                <form onSubmit={handleWaitlist} className="flex flex-col sm:flex-row gap-3">
-                  <input
-                    type="email"
-                    required
-                    value={waitlistEmail}
-                    onChange={(e) => setWaitlistEmail(e.target.value)}
-                    placeholder="your@email.com"
-                    className="flex-1 sm:w-56 bg-[#F4F0E8] border border-black/[0.12] rounded-full px-5 py-3 text-sm text-[#0C0F1A] placeholder:text-[#9AAAB8] outline-none focus:border-[#0D916A] transition font-sans"
-                  />
-                  <button type="submit" className="bg-[#0C0F1A] text-[#F4F0E8] font-semibold px-6 py-3 rounded-full text-sm hover:bg-[#1a2240] transition whitespace-nowrap">
-                    Notify me
-                  </button>
-                </form>
-              ) : (
-                <div className="flex items-center gap-3 bg-[#E8F5F1] border border-[#1D9E75]/25 rounded-2xl px-6 py-4">
-                  <div className="w-8 h-8 rounded-full bg-[#1D9E75] flex items-center justify-center flex-shrink-0">
-                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                      <path d="M2 7l3.5 3.5L12 3.5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  </div>
-                  <div>
-                    <p className="text-sm font-semibold text-[#0C0F1A]">You&apos;re on the list.</p>
-                    <p className="text-xs text-[#4E5A6E] font-light">We&apos;ll notify you at launch.</p>
-                  </div>
-                </div>
-              )}
-              <p className="text-[10px] text-[#C8C4BA] mt-2 text-center sm:text-left">No spam. Unsubscribe anytime.</p>
-            </div>
+      {/* ── PRODUCT SCREENSHOTS ─────────────────────────────────────────── */}
+      <section id="product" style={{ maxWidth: 960, margin: "0 auto", padding: "4rem 2rem" }}>
+        <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, letterSpacing: "0.12em", color: "#9AAAB8", textTransform: "uppercase", marginBottom: "1rem", textAlign: "center" }}>The Platform</div>
+        <h2 style={{ fontFamily: "'Fraunces', serif", fontSize: 32, textAlign: "center", marginBottom: "3rem", fontWeight: 400 }}>Deviation intelligence, visualized.</h2>
+
+        {/* Full width */}
+        <div style={{ background: "white", borderRadius: 10, border: "0.5px solid rgba(12,15,26,0.1)", overflow: "hidden", marginBottom: "1rem" }}>
+          <div style={{ background: "#F4F0E8", padding: "8px 14px", borderBottom: "0.5px solid rgba(12,15,26,0.08)", display: "flex", gap: 6 }}>
+            {["#E24B4A","#EF9F27","#639922"].map(c => <div key={c} style={{ width: 10, height: 10, borderRadius: "50%", background: c }} />)}
           </div>
+          <img src="/dashboard.png" alt="Sentira dashboard" style={{ width: "100%", display: "block" }} />
+          <div style={{ padding: "10px 14px", fontSize: 11, color: "#9AAAB8", fontFamily: "'JetBrains Mono', monospace" }}>Live deviation atlas — city emotional fingerprints updated every 15 minutes</div>
+        </div>
+
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", marginBottom: "1rem" }}>
+          {[["worldmap.png","World atlas — ROYGBIV deviation map"],["analytics.png","City drilldown — topic-normalized deviation timeline"]].map(([src,cap]) => (
+            <div key={src} style={{ background: "white", borderRadius: 10, border: "0.5px solid rgba(12,15,26,0.1)", overflow: "hidden" }}>
+              <div style={{ background: "#F4F0E8", padding: "8px 14px", borderBottom: "0.5px solid rgba(12,15,26,0.08)", display: "flex", gap: 6 }}>
+                {["#E24B4A","#EF9F27","#639922"].map(c => <div key={c} style={{ width: 10, height: 10, borderRadius: "50%", background: c }} />)}
+              </div>
+              <img src={`/${src}`} alt={cap} style={{ width: "100%", display: "block" }} />
+              <div style={{ padding: "10px 14px", fontSize: 11, color: "#9AAAB8", fontFamily: "'JetBrains Mono', monospace" }}>{cap}</div>
+            </div>
+          ))}
+        </div>
+
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "1rem" }}>
+          {[["mobile.png","Mobile — pulse check"],["comparison.png","City comparison"],["casestudy.png","Case study view"]].map(([src,cap]) => (
+            <div key={src} style={{ background: "white", borderRadius: 10, border: "0.5px solid rgba(12,15,26,0.1)", overflow: "hidden" }}>
+              <div style={{ background: "#F4F0E8", padding: "8px 14px", borderBottom: "0.5px solid rgba(12,15,26,0.08)", display: "flex", gap: 6 }}>
+                {["#E24B4A","#EF9F27","#639922"].map(c => <div key={c} style={{ width: 10, height: 10, borderRadius: "50%", background: c }} />)}
+              </div>
+              <img src={`/${src}`} alt={cap} style={{ width: "100%", display: "block" }} />
+              <div style={{ padding: "10px 14px", fontSize: 11, color: "#9AAAB8", fontFamily: "'JetBrains Mono', monospace" }}>{cap}</div>
+            </div>
+          ))}
         </div>
       </section>
 
-      {/* ── PRODUCT SCREENSHOTS ── */}
-      <section id="product" className="py-20 px-6 bg-white border-b border-black/[0.07]">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <p className="text-[10px] uppercase tracking-[0.25em] text-[#0D916A] font-semibold mb-3">Intelligence Platform Preview</p>
-            <h2 className="text-3xl font-bold mb-3 text-[#0C0F1A]">Sentira™ Geographic Deviation Intelligence.<br />In color, not text.</h2>
-            <p className="text-[#4E5A6E] max-w-xl mx-auto font-light">Real-time deviation intelligence across global markets — color-coded by emotion, normalized against city baselines, updated every 15 minutes.</p>
-          </div>
+      {/* ── EMOTION SPECTRUM ─────────────────────────────────────────────── */}
+      <section id="spectrum" style={{ maxWidth: 960, margin: "0 auto", padding: "4rem 2rem" }}>
+        <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, letterSpacing: "0.12em", color: "#9AAAB8", textTransform: "uppercase", marginBottom: "1rem", textAlign: "center" }}>The Emotion System</div>
+        <h2 style={{ fontFamily: "'Fraunces', serif", fontSize: 32, textAlign: "center", marginBottom: "1rem", fontWeight: 400 }}>82 emotions. 12 families. One spectrum.</h2>
+        <p style={{ textAlign: "center", color: "#4E5A6E", fontSize: 14, marginBottom: "2.5rem" }}>Lighter shade = gentler emotion · Darker shade = more intense</p>
 
-          {/* Image 1 — dashboard — full width */}
-          <div className="rounded-2xl overflow-hidden border border-black/[0.07] shadow-xl shadow-black/[0.06] mb-5">
-            <div className="bg-[#F4F0E8] border-b border-black/[0.07] px-4 py-3 flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-[#FF5F56]" />
-              <div className="w-3 h-3 rounded-full bg-[#FFBD2E]" />
-              <div className="w-3 h-3 rounded-full bg-[#27C93F]" />
-              <span className="ml-3 text-xs text-[#9AAAB8] font-mono">app.sentira.net/dashboard · live deviation intelligence</span>
+        {/* ROYGBIV bar */}
+        <div style={{ display: "flex", borderRadius: 8, overflow: "hidden", marginBottom: "3rem", height: 48 }}>
+          {roygbiv.map(r => (
+            <div key={r.label} style={{ flex: 1, background: r.color, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+              <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 14, color: "white", fontWeight: 500 }}>{r.label}</span>
             </div>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/dashboard.png" alt="Sentira™ deviation intelligence dashboard — live global emotion map with city-level deviation scores" style={{ width: "100%", display: "block" }} />
-            <div className="px-5 py-3 bg-white border-t border-black/[0.07] flex items-center justify-between">
-              <p className="text-xs font-semibold text-[#0C0F1A]">Live Deviation Dashboard</p>
-              <p className="text-xs text-[#9AAAB8] font-light">Global deviation atlas · City signals · Baseline comparisons · Mobile views</p>
-            </div>
-          </div>
+          ))}
+        </div>
 
-          {/* Images 2 & 3 */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
-            <div className="rounded-2xl overflow-hidden border border-black/[0.07] shadow-md shadow-black/[0.04]">
-              <div className="bg-[#F4F0E8] border-b border-black/[0.07] px-4 py-3 flex items-center gap-2">
-                <div className="w-2.5 h-2.5 rounded-full bg-[#FF5F56]" /><div className="w-2.5 h-2.5 rounded-full bg-[#FFBD2E]" /><div className="w-2.5 h-2.5 rounded-full bg-[#27C93F]" />
-                <span className="ml-2 text-xs text-[#9AAAB8] font-mono">Deviation Atlas</span>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: "1.5rem" }}>
+          {emotionFamilies.map(f => (
+            <div key={f.family} style={{ background: "white", borderRadius: 10, border: "0.5px solid rgba(12,15,26,0.08)", padding: "1rem", borderTop: `3px solid ${f.color}` }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: "0.75rem" }}>
+                <div style={{ width: 12, height: 12, borderRadius: "50%", background: f.color }} />
+                <span style={{ fontFamily: "'Fraunces', serif", fontSize: 15, color: "#0C0F1A" }}>{f.family}</span>
               </div>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/worldmap.png" alt="Sentira geographic deviation atlas" style={{ width: "100%", display: "block" }} />
-              <div className="px-4 py-3 bg-white border-t border-black/[0.07]">
-                <p className="text-xs font-semibold text-[#0C0F1A] mb-0.5">Geographic Deviation Atlas</p>
-                <p className="text-xs text-[#9AAAB8] font-light">ROYGBIV deviation colors · Live city signals · Open web sourced</p>
-              </div>
-            </div>
-            <div className="rounded-2xl overflow-hidden border border-black/[0.07] shadow-md shadow-black/[0.04]">
-              <div className="bg-[#F4F0E8] border-b border-black/[0.07] px-4 py-3 flex items-center gap-2">
-                <div className="w-2.5 h-2.5 rounded-full bg-[#FF5F56]" /><div className="w-2.5 h-2.5 rounded-full bg-[#FFBD2E]" /><div className="w-2.5 h-2.5 rounded-full bg-[#27C93F]" />
-                <span className="ml-2 text-xs text-[#9AAAB8] font-mono">Deviation Analytics</span>
-              </div>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/analytics.png" alt="Sentira deviation analytics" style={{ width: "100%", display: "block" }} />
-              <div className="px-4 py-3 bg-white border-t border-black/[0.07]">
-                <p className="text-xs font-semibold text-[#0C0F1A] mb-0.5">Deviation Analytics</p>
-                <p className="text-xs text-[#9AAAB8] font-light">Baseline comparison · City deviation scores · ROYGBIV spectrum</p>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
+                {f.emotions.map(em => (
+                  <span key={em} style={{ fontSize: 10, background: f.light, color: f.color, borderRadius: 4, padding: "2px 6px", fontFamily: "'JetBrains Mono', monospace" }}>{em}</span>
+                ))}
               </div>
             </div>
-          </div>
-
-          {/* Images 4, 5, 6 */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-            <div className="rounded-2xl overflow-hidden border border-black/[0.07] shadow-md shadow-black/[0.04]">
-              <div className="bg-[#F4F0E8] border-b border-black/[0.07] px-4 py-3 flex items-center gap-2">
-                <div className="w-2.5 h-2.5 rounded-full bg-[#FF5F56]" /><div className="w-2.5 h-2.5 rounded-full bg-[#FFBD2E]" /><div className="w-2.5 h-2.5 rounded-full bg-[#27C93F]" />
-                <span className="ml-2 text-xs text-[#9AAAB8] font-mono">Mobile</span>
-              </div>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/mobile.png" alt="Sentira mobile deviation intelligence" style={{ width: "100%", display: "block" }} />
-              <div className="px-4 py-3 bg-white border-t border-black/[0.07]">
-                <p className="text-xs font-semibold text-[#0C0F1A] mb-0.5">Mobile Intelligence</p>
-                <p className="text-xs text-[#9AAAB8] font-light">Deviation atlas · Live signals · On the move</p>
-              </div>
-            </div>
-            <div className="rounded-2xl overflow-hidden border border-black/[0.07] shadow-md shadow-black/[0.04]">
-              <div className="bg-[#F4F0E8] border-b border-black/[0.07] px-4 py-3 flex items-center gap-2">
-                <div className="w-2.5 h-2.5 rounded-full bg-[#FF5F56]" /><div className="w-2.5 h-2.5 rounded-full bg-[#FFBD2E]" /><div className="w-2.5 h-2.5 rounded-full bg-[#27C93F]" />
-                <span className="ml-2 text-xs text-[#9AAAB8] font-mono">Why Sentira</span>
-              </div>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/comparison.png" alt="3 sentiment states vs 82 Sentira deviation emotions" style={{ width: "100%", display: "block" }} />
-              <div className="px-4 py-3 bg-white border-t border-black/[0.07]">
-                <p className="text-xs font-semibold text-[#0C0F1A] mb-0.5">The Sentira Difference</p>
-                <p className="text-xs text-[#9AAAB8] font-light">3 sentiment states vs 82 named emotions</p>
-              </div>
-            </div>
-            <div className="rounded-2xl overflow-hidden border border-black/[0.07] shadow-md shadow-black/[0.04]">
-              <div className="bg-[#F4F0E8] border-b border-black/[0.07] px-4 py-3 flex items-center gap-2">
-                <div className="w-2.5 h-2.5 rounded-full bg-[#FF5F56]" /><div className="w-2.5 h-2.5 rounded-full bg-[#FFBD2E]" /><div className="w-2.5 h-2.5 rounded-full bg-[#27C93F]" />
-                <span className="ml-2 text-xs text-[#9AAAB8] font-mono">Case Study</span>
-              </div>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/casestudy.png" alt="Los Angeles deviation case study April vs May 2026" style={{ width: "100%", display: "block" }} />
-              <div className="px-4 py-3 bg-white border-t border-black/[0.07]">
-                <p className="text-xs font-semibold text-[#0C0F1A] mb-0.5">Deviation Case Study</p>
-                <p className="text-xs text-[#9AAAB8] font-light">Los Angeles · April vs May 2026 baseline shift</p>
-              </div>
-            </div>
-          </div>
+          ))}
         </div>
       </section>
 
-      {/* ── EMOTION SPECTRUM ── */}
-      <section id="spectrum" className="py-16 px-6 border-b border-black/[0.07] bg-[#F4F0E8]">
-        <div className="max-w-5xl mx-auto text-center">
-          <p className="text-[10px] uppercase tracking-[0.25em] text-[#9AAAB8] mb-1 font-semibold">The Sentira Proprietary Spectrum</p>
-          <p className="text-xs text-[#9AAAB8] mb-2">82 named emotions · 12 families · ROYGBIV deviation color system</p>
-          <p className="text-xs text-[#9AAAB8] mb-8">Lighter shade = gentler expression · Darker shade = more intense expression · Each color family maps to a specific emotional valence</p>
-          <div className="flex h-1.5 rounded-full overflow-hidden max-w-2xl mx-auto mb-8 gap-0.5">
-            {["#E24B4A","#D85A30","#EF9F27","#BA7517","#639922","#1D9E75","#5DCAA5","#378ADD","#7F77DD","#D4537E"].map((c) => (
-              <div key={c} className="flex-1 rounded-full" style={{ background: c }} />
-            ))}
-          </div>
-          <div className="flex flex-col gap-3 text-left max-w-4xl mx-auto">
-            {emotionFamilies.map((f) => (
-              <div key={f.family} className="flex items-start gap-3">
-                <span className="text-[10px] uppercase tracking-widest min-w-[80px] pt-1 font-semibold" style={{ color: f.color }}>
-                  {f.family}
-                </span>
-                <div className="flex flex-wrap gap-1.5">
-                  {f.emotions.map((e, i) => (
-                    <span key={e} className="px-2.5 py-1 rounded-full text-xs font-medium" style={{
-                      background: i < 3 ? f.light : i < 5 ? f.color + "50" : f.color,
-                      color: i < 3 ? f.dark : i < 5 ? f.dark : "#fff",
-                      border: `1px solid ${f.color}25`,
-                    }}>
-                      {e}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
+      {/* ── HOW IT WORKS ─────────────────────────────────────────────────── */}
+      <section id="how-it-works" style={{ maxWidth: 960, margin: "0 auto", padding: "4rem 2rem" }}>
+        <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, letterSpacing: "0.12em", color: "#9AAAB8", textTransform: "uppercase", marginBottom: "1rem", textAlign: "center" }}>Methodology</div>
+        <h2 style={{ fontFamily: "'Fraunces', serif", fontSize: 32, textAlign: "center", marginBottom: "0.5rem", fontWeight: 400 }}>Five layers. One truth.</h2>
+        <p style={{ textAlign: "center", color: "#9AAAB8", fontFamily: "'JetBrains Mono', monospace", fontSize: 12, marginBottom: "3rem" }}>— Sentira™</p>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: "1rem" }}>
+          {howItWorks.map(l => (
+            <div key={l.num} style={{ background: "white", borderRadius: 10, border: "0.5px solid rgba(12,15,26,0.08)", padding: "1.25rem" }}>
+              <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 24, color: "#0D916A", marginBottom: "0.5rem" }}>{l.num}</div>
+              <div style={{ fontFamily: "'Fraunces', serif", fontSize: 16, marginBottom: "0.5rem" }}>{l.name}</div>
+              <div style={{ fontSize: 12, color: "#4E5A6E", lineHeight: 1.6 }}>{l.desc}</div>
+            </div>
+          ))}
         </div>
       </section>
 
-      {/* ── HOW IT WORKS ── */}
-      <section id="how-it-works" className="py-24 px-6 bg-white border-b border-black/[0.07]">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-16">
-            <p className="text-[10px] uppercase tracking-[0.25em] text-[#0D916A] font-semibold mb-3">The Sentira™ Methodology</p>
-            <h2 className="text-3xl font-bold mb-3 text-[#0C0F1A]">Five layers. One truth. — Sentira™</h2>
-            <p className="text-[#4E5A6E] max-w-xl mx-auto font-light">From open web signal to geographic deviation intelligence — in five proprietary steps.</p>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-            {steps.map((s) => (
-              <div key={s.number} className="bg-[#F4F0E8] border border-black/[0.07] rounded-2xl p-6 flex flex-col gap-3 hover:shadow-md hover:border-black/15 transition">
-                <div className="flex items-center gap-2 mb-1">
-                  <div className="w-2 h-2 rounded-full" style={{ background: s.color }} />
-                  <span className="text-[10px] uppercase tracking-widest text-[#9AAAB8] font-semibold">
-                    {s.number === "00" ? "Layer 0 · NEW" : `Layer ${s.number}`}
-                  </span>
-                </div>
-                <span className="text-4xl font-black text-[#0C0F1A]/[0.08]">{s.number}</span>
-                <h3 className="text-base font-semibold text-[#0C0F1A]">{s.title}</h3>
-                <p className="text-sm text-[#4E5A6E] leading-relaxed font-light">{s.desc}</p>
-              </div>
-            ))}
-          </div>
+      {/* ── SOLUTIONS ────────────────────────────────────────────────────── */}
+      <section id="solutions" style={{ maxWidth: 960, margin: "0 auto", padding: "4rem 2rem" }}>
+        <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 10, letterSpacing: "0.12em", color: "#9AAAB8", textTransform: "uppercase", marginBottom: "1rem", textAlign: "center" }}>Use Cases</div>
+        <h2 style={{ fontFamily: "'Fraunces', serif", fontSize: 32, textAlign: "center", marginBottom: "3rem", fontWeight: 400 }}>Who buys deviation intelligence.</h2>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.25rem" }}>
+          {solutions.map(s => (
+            <div key={s.title} style={{ background: "white", borderRadius: 10, border: "0.5px solid rgba(12,15,26,0.08)", padding: "1.5rem" }}>
+              <div style={{ fontSize: 24, marginBottom: "0.75rem" }}>{s.icon}</div>
+              <div style={{ fontFamily: "'Fraunces', serif", fontSize: 18, marginBottom: "0.5rem" }}>{s.title}</div>
+              <div style={{ fontSize: 13, color: "#0D916A", fontStyle: "italic", marginBottom: "0.75rem", lineHeight: 1.6 }}>{s.quote}</div>
+              <div style={{ fontSize: 13, color: "#4E5A6E", lineHeight: 1.6 }}>{s.desc}</div>
+            </div>
+          ))}
         </div>
       </section>
 
-      {/* ── SOLUTIONS ── */}
-      <section id="use-cases" className="py-24 px-6 bg-[#F4F0E8] border-b border-black/[0.07]">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-16">
-            <p className="text-[10px] uppercase tracking-[0.25em] text-[#0D916A] font-semibold mb-3">Intelligence Solutions</p>
-            <h2 className="text-3xl font-bold mb-3 text-[#0C0F1A]">Built for the intelligence teams that move first. Only on Sentira™.</h2>
-            <p className="text-[#4E5A6E] max-w-xl mx-auto font-light">Financial analysts, news intelligence desks, institutional researchers, and campaign strategists — Sentira provides the deviation signal that no existing data feed carries.</p>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            {useCases.map((u) => (
-              <div key={u.title} className="bg-white border border-black/[0.07] rounded-2xl p-6 hover:border-black/15 hover:shadow-sm transition relative overflow-hidden">
-                <div className="absolute top-0 left-0 right-0 h-[3px] opacity-0 hover:opacity-100 transition" style={{ background: u.accent }} />
-                <div className="flex gap-4 mb-4">
-                  <span className="text-3xl">{u.icon}</span>
-                  <div>
-                    <h3 className="font-semibold mb-1 text-[#0C0F1A]">{u.title}</h3>
-                    <p className="text-sm text-[#4E5A6E] leading-relaxed font-light">{u.desc}</p>
-                  </div>
-                </div>
-                <div className="rounded-lg px-4 py-3 text-sm italic font-light text-[#4E5A6E] border-l-2" style={{ background: u.accent + "10", borderColor: u.accent }}>
-                  &ldquo;{u.quote}&rdquo;
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+      {/* ── CTA ─────────────────────────────────────────────────────────── */}
+      <section style={{ maxWidth: 960, margin: "0 auto", padding: "4rem 2rem 6rem", textAlign: "center" }}>
+        <h2 style={{ fontFamily: "'Fraunces', serif", fontSize: 32, marginBottom: "1rem", fontWeight: 400 }}>Request a demonstration</h2>
+        <p style={{ fontSize: 14, color: "#4E5A6E", marginBottom: "2rem" }}>API access · Custom data packages · Enterprise pricing</p>
+        <a href="mailto:hello@sentira.net?subject=Enterprise Access Request — Sentira"
+          style={{ background: "#0C0F1A", color: "#F4F0E8", padding: "16px 36px", borderRadius: 8, textDecoration: "none", fontSize: 15, fontWeight: 500, display: "inline-block" }}>
+          hello@sentira.net →
+        </a>
       </section>
 
-      {/* ── ENTERPRISE CTA ── */}
-      <section className="py-24 px-6 text-center bg-white">
-        <div className="max-w-2xl mx-auto">
-          <p className="text-[10px] uppercase tracking-[0.25em] text-[#0D916A] font-semibold mb-4">Enterprise Access</p>
-          <h2 className="text-4xl font-extrabold mb-4 text-[#0C0F1A]">
-            Not what the world feels.<br />
-            <span className="text-[#0D916A] italic font-light">How differently it feels.</span>
-          <p className="text-xs text-[#9AAAB8] mt-2">Sentira™ — Deviation Intelligence Platform</p>
-          </h2>
-          <p className="text-[#4E5A6E] mb-10 font-light leading-relaxed max-w-lg mx-auto">
-            Request a platform demonstration. See how deviation intelligence compares to your existing sentiment tools — and why the difference is the signal your stack is currently missing.
-          </p>
-          <a
-            href="mailto:hello@sentira.net?subject=Enterprise Access Request — Sentira"
-            className="inline-block bg-[#0C0F1A] text-[#F4F0E8] font-bold px-10 py-4 rounded-full text-lg hover:bg-[#1a2240] transition shadow-xl"
-          >
-            Request a demonstration
-          </a>
-          <p className="text-xs text-[#9AAAB8] mt-6">
-            Enterprise pricing available · API access · Custom integration
-            <br />
-            <a href="mailto:hello@sentira.net" className="text-[#0D916A] hover:underline">hello@sentira.net</a>
-          </p>
+      {/* ── FOOTER ───────────────────────────────────────────────────────── */}
+      <footer style={{ background: "#0C0F1A", color: "#F4F0E8", padding: "3rem 2rem", textAlign: "center" }}>
+        <div style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 14, letterSpacing: "0.08em", marginBottom: "0.5rem" }}>SENTIRA™</div>
+        <div style={{ fontSize: 12, color: "#9AAAB8", marginBottom: "1rem" }}>Deviation Intelligence Platform</div>
+        <div style={{ fontSize: 11, color: "#4E5A6E", fontFamily: "'JetBrains Mono', monospace", letterSpacing: "0.05em" }}>
+          Anonymous signal collection · No personal data stored · No individual tracking
         </div>
-      </section>
-
-      {/* ── FOOTER ── */}
-      <footer className="border-t border-black/[0.07] py-10 px-6 bg-[#0C0F1A]">
-        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div>
-            <p className="text-[#F4F0E8] font-bold tracking-[0.35em] text-sm uppercase mb-1">Sentira™</p>
-            <p className="text-white/50 text-xs mb-1">Deviation Intelligence Platform</p>
-            <p className="text-white/25 text-xs">Signal · Emotion · Nuance · Trends · Insight · Real-time · Atlas · ™</p>
-          </div>
-          <p className="text-white/25 text-xs text-center sm:text-right">
-            © {new Date().getFullYear()} Sentira™ — Andrew Wesley Blackman<br />
-            Anonymous signal collection · No personal data stored · No individual tracking
-          </p>
+        <div style={{ marginTop: "1rem", fontSize: 11, color: "#4E5A6E" }}>
+          © 2026 Andrew Wesley Blackman · hello@sentira.net · sentira.net
         </div>
       </footer>
 
-    </div>
+    </main>
   );
 }
